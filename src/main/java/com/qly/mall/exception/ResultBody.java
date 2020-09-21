@@ -10,19 +10,19 @@ import lombok.Data;
 @Builder
 @Data
 public class ResultBody {
-    String code; //响应码
-    String msg;  //响应消息
-    Object res;  //响应结果
+    private String code; //响应码
+    private String msg;  //响应消息
+    private Object res;  //响应结果
 
     public static ResultBody success(Object data){
         return ResultBody.builder()
-                .code(ErrEnum.SUCCESS.code())
-                .msg(ErrEnum.SUCCESS.msg())
+                .code(ErrorNo.SUCCESS.code())
+                .msg(ErrorNo.SUCCESS.msg())
                 .res(data)
                 .build();
     }
 
-    public static ResultBody fail(BaseErrInterface b){
+    public static ResultBody fail(BaseErrorInterface b){
         return ResultBody.builder()
                 .code(b.code())
                 .msg(b.msg())

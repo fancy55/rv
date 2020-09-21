@@ -12,22 +12,22 @@ public class GlobalExceptionHandler {
     /**
      * 自定义异常
      */
-    @ExceptionHandler(value = ErrException.class)
+    @ExceptionHandler(value = ErrorException.class)
     @ResponseBody
-    public ResultBody myException(HttpServletRequest req, ErrException e){
+    public ResultBody myException(HttpServletRequest req, ErrorException e){
         e.printStackTrace();
-        return ResultBody.fail(e.getECode(),e.getEMsg());
+        return ResultBody.fail(e.getErrorCode(),e.getErrorMsg());
     }
 
-    /**
-     * token失效异常
-     */
-    @ExceptionHandler(value = TokenExpiredException.class)
-    @ResponseBody
-    public ResultBody expireException(HttpServletRequest req, TokenExpiredException e){
-        e.printStackTrace();
-        return ResultBody.fail(ErrEnum.EXPIRE_TIME);
-    }
+//    /**
+//     * token失效异常
+//     */
+//    @ExceptionHandler(value = TokenExpiredException.class)
+//    @ResponseBody
+//    public ResultBody expireException(HttpServletRequest req, TokenExpiredException e){
+//        e.printStackTrace();
+//        return ResultBody.fail(ErrorEnum.EXPIRE_TIME);
+//    }
 
     /**
      * 空指针异常
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultBody NuLLException(HttpServletRequest req, NullPointerException e){
         e.printStackTrace();
-        return  ResultBody.fail(ErrEnum.BODY_NOT_MATCH);
+        return  ResultBody.fail(ErrorNo.BODY_NOT_MATCH);
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
@@ -52,6 +52,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultBody otherException(HttpServletRequest req, Exception e){
         e.printStackTrace();
-        return ResultBody.fail(ErrEnum.SERVER_BUSY);
+        return ResultBody.fail(ErrorNo.SERVER_BUSY);
     }
 }
