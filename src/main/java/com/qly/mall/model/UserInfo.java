@@ -14,5 +14,11 @@ public class UserInfo {
     String nick_name;
     String create_time;
     String update_time;
-    String Status; //0:软删除，1：正常，2：异常
+    UserStatus Status; //0:软删除，1：正常，2：异常
 }
+
+class UserStatus{
+    Integer SOFT_DELETE = 0;
+    Integer NORMAL = 1;
+    Integer EXCEPTION = 2;
+};

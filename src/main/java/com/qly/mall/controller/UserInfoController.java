@@ -26,9 +26,16 @@ public class UserInfoController {
         return userInfoService.Register(userInfo);
     }
 
-    @GetMapping("login")
+    @PostMapping("login")
     @ApiOperation("手机号+密码登录")
     public Integer Login(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo) {
         return userInfoService.LoginByPhoneAndPassword(userInfo);
+    }
+
+    @PostMapping("alter/password")
+    @ApiOperation("修改密码")
+    public Integer UpdatePassword(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo,
+                                  @RequestParam @ApiParam(name="String",value="新密码",required=true)String newPassword) {
+        return userInfoService.AlterPassword(userInfo, newPassword);
     }
 }

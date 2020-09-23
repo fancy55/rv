@@ -1,0 +1,17 @@
+package com.qly.mall.mapper;
+
+import com.qly.mall.model.Orders;
+import com.qly.mall.model.SubOrders;
+import com.qly.mall.model.UserInfo;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+@Mapper
+public interface SubOrdersMapper {
+    @Insert("insert into sub_orders(sub_order_id,user_id,order_id,spu_id,spu_name,sku_id,sku_name,rv_user_info,encryp_rv_user_info,status,origin_price,pay_price,create_time,update_time,version) values(#{sub_order_id},#{user_id},#{order_id},#{spu_id},#{spu_name},#{sku_id},#{sku_name},#{rv_user_info},#{encryp_rv_user_info},#{status},#{origin_price},#{pay_price},now(),now(),0)")
+    Integer CreateSubOrder(SubOrders suborders);
+
+    @Select("select user_id from sub_orders where sub_order_id = #{sub_order_id}")
+    Integer FindSubOrderBySubOrderId(Integer subOrderId);
+}

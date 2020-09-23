@@ -2,10 +2,16 @@ package com.qly.mall.exception;
 
 public enum ErrorNo implements BaseErrorInterface {
     //数据操作定义
+    PARAM_ERROR("100", "参数失败"),
     PHONE_EMPTY_OR_FORMAT_ERROR("111", "手机号为空或格式错误"),
     PHONE_HAVE_REGISTERED("112", "手机号已经注册"),
     PASSWORD_EMPTY_OR_FORMAT_ERROR("113", "密码为空或格式错误"),
-    LOGIN_FAIL_PASSWORD("114", "登录失败-手机号错误或密码错误"),
+    LOGIN_FAIL("114", "登录失败-手机号错误或密码错误"),
+    USER_NOT_EXIST("115", "用户不存在"),
+    UPDATE_PASSWORD_FAIL("116", "更新密码失败"),
+    REGISTER_FAIL("117", "注册失败"),
+    CREATE_ORDER_FAIL("118", "创建订单失败"),
+    CREATE_SUBORDER_FAIL("119", "创建子订单失败"),
 
     SUCCESS("200","成功"),
 
