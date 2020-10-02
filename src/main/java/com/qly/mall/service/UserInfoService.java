@@ -4,13 +4,12 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Random;
 
 @Service
 @Transactional
@@ -19,10 +18,13 @@ public class UserInfoService {
 
     @Autowired
     UserInfoMapper userInfoMapper;
+    @Autowired
+    RandomUtil randomUtil;
 
-    public Integer Register(UserInfo userInfo){
-        CheckParamRegister(userInfo);
-        Integer user_id = getUserId();
+    public Integer Register(UserInfo userInfo, Integer type){
+        if(type == null)type = 0;
+        CheckParamRegister(userInfo, type);
+        Integer user_id = randomUtil.getId("userInfoMapper");
         if(userInfoMapper.Register(userInfo) == 1) {
             logger.info(userInfo.getPhone() + "注册成功");
         }else{
@@ -75,11 +77,15 @@ public class UserInfoService {
         }
     }
 
-    public void CheckParamRegister(UserInfo userInfo){
+    public void CheckParamRegister(UserInfo userInfo, Integer type){
         CheckParam(userInfo);
         if(userInfoMapper.FindUserIdByPhone(userInfo.getPhone()) != null){
             logger.error(userInfo.getPhone() + "手机号已注册");
             throw new ErrorException(ErrorNo.PHONE_HAVE_REGISTERED.code(), ErrorNo.PHONE_HAVE_REGISTERED.msg());
+        }
+        if(type < 0 || type > 3){
+            logger.error(userInfo.getPhone() + "用户类型参数错误");
+            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
     }
 
@@ -89,26 +95,5 @@ public class UserInfoService {
             logger.error(userInfo.getPhone() + "用户不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
-    }
-
-
-    public Integer getUserId(){
-        Random random = new Random();
-        Integer user_id = null;
-        StringBuffer stringBuffer = null;
-        while (stringBuffer == null) {
-            stringBuffer = new StringBuffer();
-            for (int i = 0; i < 8; i++) {
-                int num = random.nextInt(10);
-                if(i == 0){
-                    while(num == 0)num = random.nextInt(10);
-                }
-                stringBuffer.append(num);
-            }
-            user_id = Integer.parseInt(new String(stringBuffer));
-            if(userInfoMapper.FindUserByUserId(user_id) == null)
-                stringBuffer = null;
-        }
-        return user_id;
     }
 }

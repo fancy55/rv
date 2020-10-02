@@ -2,6 +2,7 @@ package com.qly.mall.model;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.Date;
 
@@ -9,29 +10,29 @@ import java.util.Date;
 @ApiModel("订单")
 public class Orders {
     Integer id;
-    Integer user_id;
-    Integer order_id;
-    Integer product_num;
-    Integer total_price;
-    Integer pay_price;
-    String pay_info;
-    Date create_time;
-    Date update_time;
-    Date pay_time;
-    Date close_time;
+    Integer userId;
+    Integer orderId;
+    Integer productNum;
+    Integer totalPrice;
+    Integer payPrice;
+    String payInfo;
+    Date createTime;
+    Date updateTime;
+    Date payTime;
+    Date closeTime;
     Integer version;
-    OrderStatus status;
-    PayType pay_type;
-}
+    Integer orderStatus;
+    PayType payType;
 
-class OrderStatus{
-    Integer SOFT_DELETE = 0;
-    Integer NORMAL = 1;
-    Integer EXCEPTION = 2;
-}
+    public static class OrderStatus{
+        static public Integer SOFT_DELETE = 0;
+        static public Integer NORMAL = 1;
+        static public Integer EXCEPTION = 2;
+    }
 
-class PayType{
-    Integer SOFT_DELETE = 0;
-    Integer NORMAL = 1;
-    Integer EXCEPTION = 2;
+    public static class PayType{
+        static public Integer SOFT_DELETE = 0;
+        static public Integer NORMAL = 1;
+        static public Integer EXCEPTION = 2;
+    }
 }

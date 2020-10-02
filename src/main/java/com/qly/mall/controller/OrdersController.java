@@ -2,7 +2,6 @@ package com.qly.mall.controller;
 
 import com.qly.mall.model.Orders;
 import com.qly.mall.model.SubOrders;
-import com.qly.mall.model.UserInfo;
 import com.qly.mall.service.OrdersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,4 +25,6 @@ public class OrdersController {
                               @RequestBody @ApiParam(name="SubOrders",value="子订单",required=true) SubOrders[] subOrders){
         return ordersService.CreateOrder(orders, subOrders);
     }
+
+
 }

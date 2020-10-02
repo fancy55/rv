@@ -6,12 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.security.NoSuchAlgorithmException;
 
 @RestController
 @Api("用户")
@@ -22,8 +17,9 @@ public class UserInfoController {
 
     @PostMapping("register")
     @ApiOperation(value="手机号注册",notes="注册时头像为默认")
-    public Integer Register(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo) {
-        return userInfoService.Register(userInfo);
+    public Integer Register(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo,
+                            @RequestParam @ApiParam(name="Integer",value="用户类型",required=true)Integer type) {
+        return userInfoService.Register(userInfo, type);
     }
 
     @PostMapping("login")

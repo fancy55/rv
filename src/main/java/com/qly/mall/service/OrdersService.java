@@ -2,19 +2,21 @@ package com.qly.mall.service;
 
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
+import com.qly.mall.mapper.GoodsSkuMapper;
 import com.qly.mall.mapper.OrdersMapper;
 import com.qly.mall.mapper.SubOrdersMapper;
 import com.qly.mall.mapper.UserInfoMapper;
+import com.qly.mall.model.GoodsSku;
 import com.qly.mall.model.Orders;
 import com.qly.mall.model.SubOrders;
-import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.RandomUtil;
+import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
 
 @Service
 @Transactional
@@ -27,81 +29,71 @@ public class OrdersService {
     UserInfoMapper userInfoMapper;
     @Autowired
     SubOrdersMapper subOrdersMapper;
+    @Autowired
+    RandomUtil randomUtil;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
 
     public Integer CreateOrder(Orders orders, SubOrders[] subOrders){
-        CheckParam(orders.getUser_id());
-        Integer order_id = getOrderId();
-        orders.setOrder_id(order_id);
+        CheckParam(orders.getUserId(), orders.getOrderId(), subOrders);
+        //TODO:幂等记账
+        if(ordersMapper.FindOrderByOrderId(orders.getOrderId()) != null){
+            return orders.getOrderId();
+        }
+        //TODO:redis计数器限流
+
+        Integer order_id = randomUtil.getId("ordersMapper");
+        orders.setUserId(order_id);
 
         if(ordersMapper.CreateOrder(orders) == 1){
-            logger.info(order_id + "创建订单成功");
+            logger.info(order_id + "创建orderId成功");
             for(int i = 0;i < subOrders.length; i++){
-                Integer sub_order_id = getSubOrderId();
-                subOrders[i].setSub_order_id(sub_order_id);
-                subOrders[i].setOrder_id(order_id);
+                Integer sub_order_id = randomUtil.getId("subOrdersMapper");
+                subOrders[i].setSubOrderId(sub_order_id);
+                subOrders[i].setOrderId(order_id);
                 if(subOrdersMapper.CreateSubOrder(subOrders[i]) == 1){
-                    logger.info(subOrders[i].getSub_order_id() + "创建子订单成功");
+                    logger.info(subOrders[i].getSubOrderId() + "创建subOrderId成功");
                 }else{
-                    logger.info(subOrders[i].getSub_order_id() + "创建子订单失败");
+                    logger.info(subOrders[i].getSubOrderId() + "创建subOrderId失败");
                     throw new  ErrorException(ErrorNo.CREATE_SUBORDER_FAIL.code(), ErrorNo.CREATE_SUBORDER_FAIL.msg());
                 }
             }
         }else{
-            logger.info(order_id + "创建订单失败");
+            logger.info(order_id + "创建orderId失败");
             throw new  ErrorException(ErrorNo.CREATE_ORDER_FAIL.code(), ErrorNo.CREATE_ORDER_FAIL.msg());
         }
         return order_id;
     }
 
-    public void CheckParam(Integer user_id){
+    public void CheckParam(Integer user_id, Integer orderId, SubOrders[] subOrders){
         if(user_id == null) {
-            logger.error(user_id + "参数user_id错误");
+            logger.error(user_id + "参数userId错误");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
         if(userInfoMapper.FindUserByUserId(user_id) == null){
-            logger.error(user_id + "用户不存在");
+            logger.error(user_id + "用户userId不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
-        // TODO:对子订单中商品进行（价格、状态、是否存在）
-    }
-
-    public Integer getOrderId(){
-        Random random = new Random();
-        Integer order_id = null;
-        StringBuffer stringBuffer = null;
-        while (stringBuffer == null) {
-            stringBuffer = new StringBuffer();
-            for (int i = 0; i < 8; i++) {
-                int num = random.nextInt(10);
-                if(i == 0){
-                    while(num == 0)num = random.nextInt(10);
-                }
-                stringBuffer.append(num);
+        //对子订单中商品进行检查（价格、上架状态、是否存在、出售时间）
+        for (SubOrders subOrder : subOrders) {
+            GoodsSku skuGoods = goodsSkuMapper.FindSkuGoodsBySkuId(subOrder.getSkuId());
+            if (skuGoods == null) {
+                logger.error(subOrder.getSubOrderId() + "子订单中商品不存在" + subOrder.getSkuId());
+                throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
-            order_id = Integer.parseInt(new String(stringBuffer));
-            if(ordersMapper.FindOrderByOrderId(order_id) == null)
-                stringBuffer = null;
-        }
-        return order_id;
-    }
-
-    public Integer getSubOrderId(){
-        Random random = new Random();
-        Integer sub_order_id = null;
-        StringBuffer stringBuffer = null;
-        while (stringBuffer == null) {
-            stringBuffer = new StringBuffer();
-            for (int i = 0; i < 8; i++) {
-                int num = random.nextInt(10);
-                if(i == 0){
-                    while(num == 0)num = random.nextInt(10);
-                }
-                stringBuffer.append(num);
+            if (skuGoods.getSkuStatus() != GoodsSku.SkuStatus.ON_SHELF) {
+                logger.error(subOrder.getSubOrderId() + "子订单中商品已下架" + subOrder.getSkuId());
+                throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
-            sub_order_id = Integer.parseInt(new String(stringBuffer));
-            if(subOrdersMapper.FindSubOrderBySubOrderId(sub_order_id) == null)
-                stringBuffer = null;
+            if (skuGoods.getSaleEnd().getTime() > Time.now() || skuGoods.getSaleStart().getTime() < Time.now()) {
+                logger.error(subOrder.getSubOrderId() + "子订单中商品没有正在出售中" + subOrder.getSkuId());
+                throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
+            }
+            if (subOrder.getPayPrice() < 0) {
+                logger.error(subOrder.getSubOrderId() + "子订单中用户支付价格<0");
+                throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
+            }
         }
-        return sub_order_id;
+
     }
 }

@@ -15,7 +15,6 @@ public class SmsController {
     @GetMapping("send/{number}")
     @ApiOperation("发送验证码")
     public String cmsSend(@PathVariable String number){
-        //随机产生6位验证码
         StringBuffer code = new StringBuffer();
         Random random = new Random();
         for (int i = 0; i<6; i++){

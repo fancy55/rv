@@ -14,4 +14,7 @@ public interface SubOrdersMapper {
 
     @Select("select user_id from sub_orders where sub_order_id = #{sub_order_id}")
     Integer FindSubOrderBySubOrderId(Integer subOrderId);
+
+    @Select("select * from sub_orders where order_id = #{order_id}")
+    SubOrders[] FindSubOrderByOrderId(Integer orderId);
 }
