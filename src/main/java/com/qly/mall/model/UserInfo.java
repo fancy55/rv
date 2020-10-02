@@ -2,7 +2,6 @@ package com.qly.mall.model;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @ApiModel("用户信息")
@@ -13,8 +12,8 @@ public class UserInfo {
     String we_chat;
     String password;
     String nick_name;
-    String create_time;
-    String update_time;
+    Long create_time;
+    Long update_time;
     Integer userStatus; //0:软删除，1：正常，2：异常
     UserType userType;
 

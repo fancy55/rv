@@ -3,8 +3,6 @@ package com.qly.mall.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 @ApiModel("商品sku")
 public class GoodsSku {
@@ -15,13 +13,15 @@ public class GoodsSku {
     String spuName;
     Integer originPrice;
     Integer currentPrice;
-    Date createTime;
-    Date updateTime;
+    Long createTime;
+    Long updateTime;
     Integer version;
     Integer skuStatus;
-    Integer rvCar;
-    Date saleStart;
-    Date saleEnd;
+    Integer rvCarSize;
+    Integer rvCarColor;
+    Integer rvCarType;
+    Long saleStart;
+    Long saleEnd;
     String banner;
 
     public static class SkuStatus{

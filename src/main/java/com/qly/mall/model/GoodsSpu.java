@@ -3,8 +3,6 @@ package com.qly.mall.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 @ApiModel("商品spu")
 public class GoodsSpu {
@@ -18,8 +16,8 @@ public class GoodsSpu {
     String special;
     String route;
     String tips;
-    Date createTime;
-    Date updateTime;
+    Long createTime;
+    Long updateTime;
     Integer version;
     Integer cateType;
 

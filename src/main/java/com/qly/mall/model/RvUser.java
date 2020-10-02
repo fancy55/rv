@@ -10,4 +10,7 @@ public class RvUser {
     String encrpyIdCard;
     String realName;
     Integer userId;
+    Long create_time;
+    Long update_time;
+    Integer version;
 }

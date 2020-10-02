@@ -2,9 +2,6 @@ package com.qly.mall.model;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
-import lombok.Getter;
-
-import java.util.Date;
 
 @Data
 @ApiModel("子订单")
@@ -22,8 +19,8 @@ public class SubOrders {
     Integer originPrice;
     Integer payPrice;
     Integer subOrderStatus;
-    Date createTime;
-    Date updateTime;
+    Long createTime;
+    Long updateTime;
     Integer version;
 
     public static class SubOrderStatus{
