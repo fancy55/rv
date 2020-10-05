@@ -14,6 +14,7 @@ public enum ErrorNo implements BaseErrorInterface {
     CREATE_SUBORDER_FAIL("119", "创建子订单失败"),
     GET_ID_FAIL("120", "创建8位数id"),
     SKU_EXCEPTION("121", "商品异常"), //商品不存在、商品已下架、商品未出售中
+    USER_NOT_PERMISSION("122", "用户没有权限"),
 
     SUCCESS("200","成功"),
 

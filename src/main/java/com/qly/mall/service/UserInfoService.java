@@ -5,6 +5,7 @@ import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.RandomUtil;
+import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class UserInfoService {
         if(type == null)type = 0;
         CheckParamRegister(userInfo, type);
         Integer user_id = randomUtil.getId("userInfoMapper");
+        userInfo.setCreateTime(Time.now());
+        userInfo.setUpdateTime(Time.now());
         if(userInfoMapper.Register(userInfo) == 1) {
             logger.info(userInfo.getPhone() + "注册成功");
         }else{

@@ -1,8 +1,6 @@
 package com.qly.mall.mapper;
 
-import com.qly.mall.model.Orders;
 import com.qly.mall.model.SubOrders;
-import com.qly.mall.model.UserInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

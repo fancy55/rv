@@ -10,10 +10,16 @@ public class Inventory {
     String spuName;
     Integer skuId;
     String skuName;
-    Integer status;
+    Integer status; //0:软删除、1：上架、2：下架
     Integer inv;
     Integer cap;
     Long createTime;
     Long updateTime;
     Integer version;
+
+    public static class inventoryStatus{
+        static public Integer DELETED = 0;
+        static public Integer ON_SHELF = 1;
+        static public Integer OFF_SHELF = 2;
+    }
 }

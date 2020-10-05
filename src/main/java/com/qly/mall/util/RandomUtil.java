@@ -2,9 +2,7 @@ package com.qly.mall.util;
 
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
-import com.qly.mall.mapper.OrdersMapper;
-import com.qly.mall.mapper.SubOrdersMapper;
-import com.qly.mall.mapper.UserInfoMapper;
+import com.qly.mall.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,10 @@ public class RandomUtil {
     OrdersMapper ordersMapper;
     @Autowired
     SubOrdersMapper subOrdersMapper;
+    @Autowired
+    GoodsSpuMapper goodsSpuMapper;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
 
     public Integer getId(String choose){
         Random random = new Random();
@@ -44,6 +46,14 @@ public class RandomUtil {
                     break;
                 case "ordersMapper":
                     if(ordersMapper.FindOrderByOrderId(id) == null)
+                        stringBuffer = null;
+                    break;
+                case "goodsSpuMapper":
+                    if(goodsSpuMapper.FindSpuGoodsBySpuId(id) == null)
+                        stringBuffer = null;
+                    break;
+                case "goodsSkuMapper":
+                    if(goodsSkuMapper.FindSkuGoodsBySkuId(id) == null)
                         stringBuffer = null;
                     break;
                 default:

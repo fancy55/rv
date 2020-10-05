@@ -7,13 +7,13 @@ import lombok.Data;
 @ApiModel("用户信息")
 public class UserInfo {
     Integer id;
-    Integer user_id;
+    Integer userId;
     String phone;
-    String we_chat;
+    String wechat;
     String password;
-    String nick_name;
-    Long create_time;
-    Long update_time;
+    String nickName;
+    Long createTime;
+    Long updateTime;
     Integer userStatus; //0:软删除，1：正常，2：异常
     UserType userType;
 

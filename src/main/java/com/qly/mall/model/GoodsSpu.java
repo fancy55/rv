@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @ApiModel("商品spu")
 public class GoodsSpu {
-    Integer id;
     Integer spuId;
     Integer spuName;
     String startPos;
@@ -20,6 +19,7 @@ public class GoodsSpu {
     Long updateTime;
     Integer version;
     Integer cateType;
+    String banner;
 
     public static class CateType{
         static public Integer VIRTUAL;
