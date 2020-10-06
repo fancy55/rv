@@ -40,7 +40,9 @@ public class GoodsSkuService {
         inventory.setSkuId(skuId);
         inventory.setUpdateTime(Time.now());
         inventory.setCreateTime(Time.now());
-        return (goodsSkuMapper.AddSku(goodsSku).equals(inventoryMapper.AddInventory(inventory)) && inventoryMapper.AddInventory(inventory)==1?1:0);
+        Integer addSkuStatus = goodsSkuMapper.AddSku(goodsSku);
+        Integer addInvStatus = inventoryMapper.AddInventory(inventory);
+        return (addSkuStatus.equals(addInvStatus) && addSkuStatus==1)?1 : 0;
     }
 
     public void CheckParam(GoodsSku goodsSku, Integer user_id){

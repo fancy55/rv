@@ -1,6 +1,7 @@
 package com.qly.mall.model;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 @Data
@@ -10,7 +11,14 @@ public class RvUser {
     String encrpyIdCard;
     String realName;
     Integer userId;
-    Long create_time;
-    Long update_time;
+    Long createTime;
+    Long updateTime;
     Integer version;
+    Integer status;
+    Integer num;
+
+    static public class RvUserStatus{
+        static public Integer DELETE = 0;
+        static public Integer NORMAL = 1;
+    }
 }

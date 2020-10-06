@@ -15,6 +15,8 @@ public enum ErrorNo implements BaseErrorInterface {
     GET_ID_FAIL("120", "创建8位数id"),
     SKU_EXCEPTION("121", "商品异常"), //商品不存在、商品已下架、商品未出售中
     USER_NOT_PERMISSION("122", "用户没有权限"),
+    RV_USER_HAS_EXISTING("124", "不允许重复创建重复旅人"),
+    RV_USER_NOT_EXISTING("125", "不存在此旅人"),
 
     SUCCESS("200","成功"),
 
