@@ -17,6 +17,9 @@ public interface GoodsSkuMapper {
     @Insert("insert into goods_sku(sku_id,sku_name,spu_id,spu_name,origin_price,current_price,status,rv_car_size,rv_car_type,rv_car_color,banner,sale_start,sale_end,create_time,update_time,version) values(#{sku_id},#{sku_name},#{spu_id},#{spu_name},#{origin_price},#{current_price},#{status},#{rv_car_size},#{rv_car_type},#{rv_car_color},#{banner},#{sale_start},#{sale_end},#{create_time},#{update_time},0)")
     Integer AddSku(GoodsSku goodsSku);
 
+    @Update("update goods_sku set origin_price=#{origin_price},current_price=#{current_price},rv_car_size=#{rv_car_size},rv_car_type=#{rv_car_type},rv_car_color=#{rv_car_color},banner=#{banner},sale_start=#{sale_start},sale_end=#{sale_end},update_time=#{update_time},version=version+1 where sku_id=#{sku_id}")
+    Integer UpdateSpu(GoodsSku goodsSku);
+
     @Update("update goods_sku set origin_price=#{origin_price},update_time=#{update_time},version=version+1 where sku_id=#{sku_id}")
     Integer EditSkuOriginPrice(GoodsSku goodsSku);
 

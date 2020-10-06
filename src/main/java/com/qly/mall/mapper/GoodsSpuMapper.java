@@ -14,6 +14,9 @@ public interface GoodsSpuMapper {
     @Insert("insert into goods_spu(spu_id,spu_name,price,status,banner,desc,start_pos,destination_pos,sites,special,route,tips,cate,create_time,update_time,version) values(#{spu_id},#{spu_name},#{price},#{status},#{banner},#{desc},#{start_pos},#{destination_pos},#{sites},#{special},#{route},#{tips},#{cate},#{create_time},#{update_time},0)")
     Integer AddSpu(GoodsSpu goodsSpu);
 
+    @Update("update goods_spu set price=#{price},banner=#{banner},desc=#{desc},start_pos=#{start_pos},destination_pos=#{destination_pos},sites=#{sites},special=#{special},route=#{route},tips=#{tips},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
+    Integer UpdateSpu(GoodsSpu goodsSpu);
+
     @Update("update goods_spu set price=#{price},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
     Integer EditSpuPrice(GoodsSpu goodsSpu);
 

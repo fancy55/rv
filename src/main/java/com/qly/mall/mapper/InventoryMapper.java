@@ -10,6 +10,9 @@ public interface InventoryMapper {
     @Insert("insert into inventory(spu_id,spu_name,sku_id,sku_name,status,inv,cap,create_time,update_time,version) values(#{spu_id},#{spu_name},#{sku_id},#{sku_name},2,#{inv},#{cap},#{create_time},#{update_time},0)")
     Integer AddInventory(Inventory inventory);
 
+    @Update("update inventory set inv=#{inv},cap=#{cap},update_time=#{update_time},version=version+1 where sku_id=#{sku_id}")
+    Integer UpdateInventory(Inventory inventory);
+
     @Update("update inventory set status=#{status},update_time=#{update_time},version=version+1 where sku_id=#{sku_id}")
     Integer EditInventoryStatus(Inventory inventory);
 

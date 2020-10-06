@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class GoodsSpuService {
-    static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
+    static final Logger logger = LoggerFactory.getLogger(GoodsSpuService.class);
 
     @Autowired
     GoodsSpuMapper goodsSpuMapper;
@@ -51,7 +51,19 @@ public class GoodsSpuService {
         }
         if(goodsSpu.getPrice() < 0){
             logger.error("创建价格为" + goodsSpu.getPrice() + "，不应该小于0");
-            throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
+            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
+    }
+
+    public Integer UpdateGoodsSpu(GoodsSpu newGoodsSpu, Integer user_id){
+        CheckParam(newGoodsSpu, user_id);
+        newGoodsSpu.setUpdateTime(Time.now());
+        return goodsSpuMapper.UpdateSpu(newGoodsSpu);
+    }
+
+    public Integer UpdateGoodsSpuStatus(GoodsSpu goodsSpu, Integer user_id){
+        CheckParam(goodsSpu, user_id);
+        goodsSpu.setUpdateTime(Time.now());
+        return goodsSpuMapper.EditSpuStatus(goodsSpu);
     }
 }
