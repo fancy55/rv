@@ -1,7 +1,9 @@
 package com.qly.mall.controller;
 
 import com.qly.mall.model.Orders;
+import com.qly.mall.model.Refunds;
 import com.qly.mall.model.SubOrders;
+import com.qly.mall.model.SubRefunds;
 import com.qly.mall.service.OrdersService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,5 +45,33 @@ public class OrdersController {
     public SubOrders GetSubOrderBySubOrderId(@RequestParam @ApiParam(name="Integer",value="subOrderId",required=true)Integer subOrderId,
                                             @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
         return ordersService.GetSubOrderBySubOrderId(subOrderId, userId);
+    }
+
+    @GetMapping("get/userId/suborder")
+    @ApiOperation("根据userId查询子订单")
+    public SubOrders[] GetSubOrderByUserId(@RequestParam @ApiParam(name="Integer",value="userId1-查询条件",required=true)Integer userId1,
+                                             @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetSubOrderByUserId(userId1, userId);
+    }
+
+    @GetMapping("get/userId/order")
+    @ApiOperation("根据userId查询订单")
+    public Orders[] GetOrderByUserId(@RequestParam @ApiParam(name="Integer",value="userId1-查询条件",required=true)Integer userId1,
+                                       @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetOrderByUserId(userId1, userId);
+    }
+
+    @GetMapping("get/phone/suborder")
+    @ApiOperation("根据phone查询子订单")
+    public SubOrders[] GetSubOrderByPhone(@RequestParam @ApiParam(name="String",value="phone",required=true)String phone,
+                                            @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetSubOrderByPhone(phone, userId);
+    }
+
+    @GetMapping("get/phone/order")
+    @ApiOperation("根据phone查询订单")
+    public Orders[] GetRefundByPhone(@RequestParam @ApiParam(name="String",value="phone",required=true)String phone,
+                                      @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetOrderByPhone(phone, userId);
     }
 }

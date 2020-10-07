@@ -3,10 +3,7 @@ package com.qly.mall.service;
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.*;
-import com.qly.mall.model.GoodsSku;
-import com.qly.mall.model.Inventory;
-import com.qly.mall.model.Orders;
-import com.qly.mall.model.SubOrders;
+import com.qly.mall.model.*;
 import com.qly.mall.util.RandomUtil;
 import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
@@ -109,6 +106,14 @@ public class OrdersService {
         }
     }
 
+    public Integer CheckParamPhone(String phone){
+        Integer userId1 = userInfoMapper.FindUserIdByPhone(phone);
+        if(userId1 == null){
+            logger.error(phone + "用户phone不存在");
+            throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
+        }else return userId1;
+    }
+
     public Integer OAPayOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
         orders.setOrderStatus(Orders.OrderStatus.PAID);
@@ -144,5 +149,27 @@ public class OrdersService {
     public SubOrders[] GetSubOrderByOrderId(Integer orderId, Integer userId){
         CheckParamUserId(userId);
         return subOrdersMapper.FindSubOrderByOrderId(orderId);
+    }
+
+    public SubOrders[] GetSubOrderByUserId(Integer userId1, Integer userId){
+        CheckParamUserId(userId);
+        return subOrdersMapper.FindSubOrderByUserId(userId1);
+    }
+
+    public Orders[] GetOrderByUserId(Integer userId1,Integer userId){
+        CheckParamUserId(userId);
+        return ordersMapper.FindOrderByUserId(userId1);
+    }
+
+    public SubOrders[] GetSubOrderByPhone(String phone, Integer userId){
+        Integer userId1 = CheckParamPhone(phone);
+        CheckParamUserId(userId);
+        return subOrdersMapper.FindSubOrderByUserId(userId1);
+    }
+
+    public Orders[] GetOrderByPhone(String phone, Integer userId){
+        Integer userId1 = CheckParamPhone(phone);
+        CheckParamUserId(userId);
+        return ordersMapper.FindOrderByUserId(userId1);
     }
 }

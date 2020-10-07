@@ -12,13 +12,16 @@ public interface SubRefundsMapper {
     Integer CreateSubRefund(SubRefunds subRefunds);
 
     @Select("select * from sub_refunds where refund_id = #{refundId}")
-    Refunds FindSubRefundByRefundId(Integer refundId);
+    SubRefunds[] FindSubRefundByRefundId(Integer refundId);
 
     @Select("select * from sub_refunds where order_id = #{orderId}")
-    Refunds FindSubRefundByOrderId(Integer orderId);
+    SubRefunds[] FindSubRefundByOrderId(Integer orderId);
 
     @Select("select * from sub_refunds where user_id = #{userId}")
-    Refunds FindSubRefundByUserId(Integer userId);
+    SubRefunds[] FindSubRefundByUserId(Integer userId);
+
+    @Select("select * from sub_refunds where sub_refund_id = #{subRefundId}")
+    SubRefunds FindSubRefundBySubRefundId(Integer subRefundId);
 
     @Select("select * from sub_refunds where sub_refund_id = #{subRefundId}")
     Refunds[] FindSubRefundsBySubRefundId(Integer subRefundId);

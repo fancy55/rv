@@ -23,6 +23,6 @@ public interface OrdersMapper {
     @Select("select * from orders where order_id = #{order_id}")
     Orders FindOrdersByOrderId(Integer orderId);
 
-    @Select("select * from orders where sub_order_id = #{subOrderId}")
-    Orders[] FindOrdersBySubOrderId(Integer subOrderId);
+    @Select("select * from orders where user_id = #{userId}")
+    Orders[] FindOrderByUserId(Integer userId);
 }

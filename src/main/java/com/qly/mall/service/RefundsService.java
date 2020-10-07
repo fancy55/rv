@@ -65,6 +65,15 @@ public class RefundsService {
     }
 
     public void CheckParam(Refunds refunds, Integer user_id){
+        CheckParamUserId(user_id);
+        if(refunds.getRefundAmount() < 0){
+            logger.error("退款价格不应该小于0");
+            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
+        }
+
+    }
+
+    public void CheckParamUserId(Integer user_id){
         if(user_id == null) {
             logger.error(user_id + "参数userId错误");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
@@ -78,10 +87,60 @@ public class RefundsService {
             logger.error(user_id + "用户userId没有权限");
             throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
         }
-        if(refunds.getRefundAmount() < 0){
-            logger.error("退款价格不应该小于0");
-            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
-        }
+    }
 
+    public Integer CheckParamPhone(String phone){
+        Integer userId1 = userInfoMapper.FindUserIdByPhone(phone);
+        if(userId1 == null){
+            logger.error(phone + "用户phone不存在");
+            throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
+        }else return userId1;
+    }
+
+    public Refunds GetRefundByOrderId(Integer orderId, Integer userId){
+        CheckParamUserId(userId);
+        return refundsMapper.FindRefundByOrderId(orderId);
+    }
+
+    public SubRefunds[] GetSubRefundByOrderId(Integer orderId, Integer userId){
+        CheckParamUserId(userId);
+        return subRefundsMapper.FindSubRefundByOrderId(orderId);
+    }
+
+    public Refunds GetRefundByRefundId(Integer refundId, Integer userId){
+        CheckParamUserId(userId);
+        return refundsMapper.FindRefundByRefundId(refundId);
+    }
+
+    public SubRefunds[] GetSubRefundByRefundIdd(Integer refundId, Integer userId){
+        CheckParamUserId(userId);
+        return subRefundsMapper.FindSubRefundByRefundId(refundId);
+    }
+
+    public SubRefunds GetSubRefundBySubRefundId(Integer subRefundId, Integer userId){
+        CheckParamUserId(userId);
+        return subRefundsMapper.FindSubRefundBySubRefundId(subRefundId);
+    }
+
+    public SubRefunds[] GetSubRefundByUserId(Integer userId1, Integer userId){
+        CheckParamUserId(userId);
+        return subRefundsMapper.FindSubRefundByUserId(userId1);
+    }
+
+    public Refunds[] GetRefundByUserId(Integer userId1,Integer userId){
+        CheckParamUserId(userId);
+        return refundsMapper.FindRefundByUserId(userId1);
+    }
+
+    public SubRefunds[] GetSubRefundByPhone(String phone, Integer userId){
+        Integer userId1 = CheckParamPhone(phone);
+        CheckParamUserId(userId);
+        return subRefundsMapper.FindSubRefundByUserId(userId1);
+    }
+
+    public Refunds[] GetRefundByPhone(String phone, Integer userId){
+        Integer userId1 = CheckParamPhone(phone);
+        CheckParamUserId(userId);
+        return refundsMapper.FindRefundByUserId(userId1);
     }
 }

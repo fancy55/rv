@@ -12,13 +12,13 @@ public interface RefundsMapper {
     Integer CreateRefund(Refunds refunds);
 
     @Select("select * from refunds where refund_id = #{refundId}")
-    Integer FindRefundByRefundId(Integer refundId);
+    Refunds FindRefundByRefundId(Integer refundId);
 
     @Select("select * from refunds where order_id = #{orderId}")
-    Integer FindRefundByOrderId(Integer orderId);
+    Refunds FindRefundByOrderId(Integer orderId);
 
     @Select("select * from refunds where user_id = #{userId}")
-    Integer FindRefundByUserId(Integer userId);
+    Refunds[] FindRefundByUserId(Integer userId);
 
     @Update("update refunds set status=#{status} where refund_id=#{refundId}")
     Integer UpdateRefunds(Integer refundId);
