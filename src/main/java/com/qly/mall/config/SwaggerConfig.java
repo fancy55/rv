@@ -24,7 +24,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     @Bean
     public Docket createApi(){
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("读见中国--房车旅行 接口")
+                .groupName("读见中国【房车旅行】 接口")
                 .apiInfo(apiInfo())
 //                .enable(flag)
                 .select()// 选择那些路径和api会生成document

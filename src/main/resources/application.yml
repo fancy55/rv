@@ -1,15 +1,126 @@
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 500MB
+  #      enabled: false
+
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 20000 #缓存超时时间ms
+      cache-null-values: false #是否缓存空值
+
+  redis:
+    database: 1
+    host: 47.104.191.228
+    port: 6379
+    password: 1234567abcd~@A
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 10000 #redis 连接超时时间ms
+
+  thymeleaf:
+    cache: false   #开发时关闭缓存，不然无法看到实时页面
+
+    session:
+      store-type: none
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
   datasource:
     username: root
     password: 1234567abcd~@A
-    url: jdbc:mysql://47.104.191.228:3306/boringfish?serverTimezone=UTC&userUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.104.191.228:3306/rv?serverTimezone=UTC&userUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
 
   mvc:
     throw-exception-if-no-handler-found: true
 
+  application:
+    name: qly_fish
+
+  encrypt:
+    debug: false
+
+ok:
+  http:
+    connectTimeout: 30
+    readTimeout: 30
+    writeTimeout: 30
+    maxIdleConnections: 200
+    keepAliveDuration: 300
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
 server:
-  port: 8087
+  port: 8086
   servlet:
     session:
       timeout: PT2H #2H
+#  ssl:
+#    key-store: classpath:www.qlybit.xyz.jks
+#    key-store-password: 1234567abcd~@A
+#    key-store-type: JKS
+
+aliyun:
+  card:
+    appSecret: ha4w17wiqpo6f8x5e8pkmedhwos326m7
+    appCode: a3b7c145592f4464a5c8fdfe74ba5d0b
+    host: https://zidv2.market.alicloudapi.com
+    path: /idcard/VerifyIdcardv2
+    method: GET
+  sms:
+    accessKeyId: LTAI4FjL6sAP98bdvjPkwrRs
+    accessKeySecret: y9WRlSSjQWBDNvm5CQOYSHbfGukrHF
+    templateCode: SMS_184816388
+    signName: csust303
+
+
+encrypt:
+  body:
+    aesKey: cvke+HB3-0w=HKXT
+    ALGORITHMSTR: AES/ECB/PKCS5Padding
+
+photo:
+  info:
+    url: http://150.158.115.210:8089/photo
+    path: /root/vr/photo
+    type: .jpg
+
+async:
+  info:
+    threadCorePool: 8
+    threadMaxPool: 64
+    queueCapacity: 1000
+
