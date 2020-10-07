@@ -1,6 +1,7 @@
 package com.qly.mall.controller;
 
 import com.qly.mall.model.GoodsSku;
+import com.qly.mall.model.Inventory;
 import com.qly.mall.service.GoodsSkuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,8 +19,9 @@ public class GoodsSkuController {
     @PostMapping("create")
     @ApiOperation("创建sku商品")
     public Integer CreateGoodsSku(@RequestBody @ApiParam(name="GoodsSku",value="sku商品",required=true)GoodsSku goodsSku,
+                                  @RequestBody @ApiParam(name="Inventory",value="inventory",required=true)Inventory inventory,
                                   @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
-        return goodsSkuService.CreateGoodsSku(goodsSku, userId);
+        return goodsSkuService.CreateGoodsSku(goodsSku, inventory, userId);
     }
 
     @PostMapping("update")
@@ -29,10 +31,10 @@ public class GoodsSkuController {
         return goodsSkuService.UpdateGoodsSku(newGoodsSku, userId);
     }
 
-    @PostMapping("edit/status")
-    @ApiOperation("更新sku商品状态")
-    public Integer UpdateGoodsSkuStatus(@RequestBody @ApiParam(name="GoodsSku",value="sku商品",required=true)GoodsSku goodsSku,
-                                  @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
-        return goodsSkuService.UpdateGoodsSkuStatus(goodsSku, userId);
-    }
+//    @PostMapping("edit/status")
+//    @ApiOperation("更新sku商品状态")
+//    public Integer UpdateGoodsSkuStatus(@RequestBody @ApiParam(name="GoodsSku",value="sku商品",required=true)GoodsSku goodsSku,
+//                                  @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+//        return goodsSkuService.UpdateGoodsSkuStatus(goodsSku, userId);
+//    }
 }

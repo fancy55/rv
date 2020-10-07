@@ -25,7 +25,6 @@ public class GoodsSku {
     String banner;
 
     public static class SkuStatus{
-        static public Integer DELETED = 0;
         static public Integer ON_SHELF = 1;
         static public Integer OFF_SHELF = 2;
     }

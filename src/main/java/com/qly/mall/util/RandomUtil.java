@@ -20,6 +20,10 @@ public class RandomUtil {
     GoodsSpuMapper goodsSpuMapper;
     @Autowired
     GoodsSkuMapper goodsSkuMapper;
+    @Autowired
+    RefundsMapper refundsMapper;
+    @Autowired
+    SubRefundsMapper subRefundsMapper;
 
     public Integer getId(String choose){
         Random random = new Random();
@@ -46,6 +50,14 @@ public class RandomUtil {
                     break;
                 case "ordersMapper":
                     if(ordersMapper.FindOrderByOrderId(id) == null)
+                        stringBuffer = null;
+                    break;
+                case "subRefundsMapper":
+                    if(subRefundsMapper.FindSubRefundsBySubRefundId(id) == null)
+                        stringBuffer = null;
+                    break;
+                case "refundsMapper":
+                    if(refundsMapper.FindRefundByRefundId(id) == null)
                         stringBuffer = null;
                     break;
                 case "goodsSpuMapper":

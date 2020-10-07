@@ -46,11 +46,11 @@ public class OrdersService {
         orders.setUserId(order_id);
         orders.setCreateTime(Time.now());
         orders.setUpdateTime(Time.now());
-        orders.setOrderStatus(Orders.OrderStatus.CREATING);
-        orders.setPayType(Orders.PayType.OA);
+        orders.setOrderStatus(Orders.OrderStatus.CREATED);
+        if(orders.getPayPrice() == 0)orders.setPayType(Orders.PayType.ZERO);
+        else orders.setPayType(Orders.PayType.OA); //OA支付
         if(ordersMapper.CreateOrder(orders) == 1){
             logger.info(order_id + "创建orderId成功");
-            ordersMapper.UpdateOrder(order_id);
             for(int i = 0;i < subOrders.length; i++){
                 Integer sub_order_id = randomUtil.getId("subOrdersMapper");
                 subOrders[i].setSubOrderId(sub_order_id);
@@ -69,18 +69,22 @@ public class OrdersService {
         return order_id;
     }
 
-    public void CheckParam(Integer user_id, Orders orders, SubOrders[] subOrders){
+    public void CheckParamUserId(Integer user_id){
         if(user_id == null) {
             logger.error(user_id + "参数userId错误");
-            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
-        }
-        if(!orders.getUserId().equals(user_id)){
-            logger.error(user_id + "参数userId和订单中的创建人userId不一样");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
         if(userInfoMapper.FindUserByUserId(user_id) == null){
             logger.error(user_id + "用户userId不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
+        }
+    }
+
+    public void CheckParam(Integer user_id, Orders orders, SubOrders[] subOrders){
+        CheckParamUserId(user_id);
+        if(!orders.getUserId().equals(user_id)){
+            logger.error(user_id + "参数userId和订单中的创建人userId不一样");
+            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
         //对子订单中商品进行检查（价格、上架状态、是否存在、出售时间）
         for (SubOrders subOrder : subOrders) {
@@ -103,6 +107,42 @@ public class OrdersService {
                 throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
         }
+    }
 
+    public Integer OAPayOrder(Orders orders, Integer userId){
+        CheckParam(userId, orders, null);
+        orders.setOrderStatus(Orders.OrderStatus.PAID);
+        orders.setUpdateTime(Time.now());
+        return ordersMapper.UpdateOrder(orders);
+    }
+
+    public Integer CancelOrder(Orders orders, Integer userId){
+        CheckParam(userId, orders, null);
+        orders.setOrderStatus(Orders.OrderStatus.CANCELED);
+        orders.setUpdateTime(Time.now());
+        return ordersMapper.UpdateOrder(orders);
+    }
+
+    public Integer CloseOrder(Orders orders, Integer userId){
+        CheckParam(userId, orders, null);
+        orders.setCloseTime(Time.now());
+        orders.setOrderStatus(Orders.OrderStatus.CLOSE);
+        orders.setUpdateTime(Time.now());
+        return ordersMapper.UpdateOrder(orders);
+    }
+
+    public Orders GetOrderByOrderId(Integer orderId, Integer userId){
+        CheckParamUserId(userId);
+        return ordersMapper.FindOrdersByOrderId(orderId);
+    }
+
+    public SubOrders GetSubOrderBySubOrderId(Integer subOrderId, Integer userId){
+        CheckParamUserId(userId);
+        return subOrdersMapper.FindSubOrdersBySubOrderId(subOrderId);
+    }
+
+    public SubOrders[] GetSubOrderByOrderId(Integer orderId, Integer userId){
+        CheckParamUserId(userId);
+        return subOrdersMapper.FindSubOrderByOrderId(orderId);
     }
 }

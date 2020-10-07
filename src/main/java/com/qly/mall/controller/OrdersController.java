@@ -24,5 +24,24 @@ public class OrdersController {
         return ordersService.CreateOrder(orders, subOrders, userId);
     }
 
+    @GetMapping("get/order")
+    @ApiOperation("根据订单查询订单")
+    public Orders GetOrderByOrderId(@RequestParam @ApiParam(name="Integer",value="orderId",required=true)Integer orderId,
+                                    @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetOrderByOrderId(orderId, userId);
+    }
 
+    @GetMapping("get/suborder")
+    @ApiOperation("根据订单查询子订单")
+    public SubOrders[] GetSubOrderByOrderId(@RequestParam @ApiParam(name="Integer",value="orderId",required=true)Integer orderId,
+                                      @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetSubOrderByOrderId(orderId, userId);
+    }
+
+    @GetMapping("get/suborder/suborder")
+    @ApiOperation("根据子订单查询子订单")
+    public SubOrders GetSubOrderBySubOrderId(@RequestParam @ApiParam(name="Integer",value="subOrderId",required=true)Integer subOrderId,
+                                            @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return ordersService.GetSubOrderBySubOrderId(subOrderId, userId);
+    }
 }

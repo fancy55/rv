@@ -17,6 +17,8 @@ public enum ErrorNo implements BaseErrorInterface {
     USER_NOT_PERMISSION("122", "用户没有权限"),
     RV_USER_HAS_EXISTING("124", "不允许重复创建重复旅人"),
     RV_USER_NOT_EXISTING("125", "不存在此旅人"),
+    CREATE_REFUND_FAIL("126", "创建退款失败"),
+    CREATE_SUB_REFUND_FAIL("127", "创建子退款失败"),
 
     SUCCESS("200","成功"),
 

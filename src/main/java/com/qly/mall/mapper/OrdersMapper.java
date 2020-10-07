@@ -14,6 +14,15 @@ public interface OrdersMapper {
     @Select("select user_id from orders where order_id = #{order_id}")
     Integer FindOrderByOrderId(Integer orderId);
 
-    @Update("update orders set status=#{status} where order_id=#{order_id}")
-    Integer UpdateOrder(Integer orderId);
+    @Update("update orders set status=#{status},close_time=#{closeTime},update_time=#{update_time},version=version+1 where order_id=#{order_id}")
+    Integer UpdateOrder(Orders orders);
+
+    @Update("update orders set status=#{status},update_time=#{updateTime},version=version+1 where order_id=#{order_id}")
+    Integer UpdateOrderStatus(Integer status, Long updateTime, Integer orderId);
+
+    @Select("select * from orders where order_id = #{order_id}")
+    Orders FindOrdersByOrderId(Integer orderId);
+
+    @Select("select * from orders where sub_order_id = #{subOrderId}")
+    Orders[] FindOrdersBySubOrderId(Integer subOrderId);
 }
