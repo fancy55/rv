@@ -33,11 +33,7 @@ public class GoodsSkuService {
         CheckParam(goodsSku, user_id);
         Integer skuId = randomUtil.getId("goodsSkuMapper");
         goodsSku.setSkuId(skuId);
-        goodsSku.setCreateTime(System.currentTimeMillis());
-        goodsSku.setUpdateTime(System.currentTimeMillis());
         inventory.setSkuId(skuId);
-        inventory.setUpdateTime(System.currentTimeMillis());
-        inventory.setCreateTime(System.currentTimeMillis());
         Integer addSkuStatus = goodsSkuMapper.AddSku(goodsSku);
         Integer addInvStatus = inventoryMapper.AddInventory(inventory);
         return (addSkuStatus.equals(addInvStatus) && addSkuStatus==1)?1 : 0;
@@ -53,7 +49,6 @@ public class GoodsSkuService {
 
     public Integer UpdateGoodsSku(GoodsSku newGoodsSku, Integer user_id){
         CheckParam(newGoodsSku, user_id);
-        newGoodsSku.setUpdateTime(System.currentTimeMillis());
         return goodsSkuMapper.UpdateSpu(newGoodsSku);
     }
 

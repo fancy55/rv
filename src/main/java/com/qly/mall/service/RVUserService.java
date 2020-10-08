@@ -27,8 +27,6 @@ public class RVUserService {
 
     public Integer CreateRvUser(RvUser rvUser, Integer user_id){
         CreateCheckParam(rvUser, user_id);
-        rvUser.setCreateTime(System.currentTimeMillis());
-        rvUser.setUpdateTime(System.currentTimeMillis());
         Integer addStatus = rvUserMapper.AddRvUser(rvUser);
         Integer updateStatus = rvUserMapper.UpdateRvUserNum(rvUser);
         return (addStatus.equals(updateStatus) && updateStatus==1)?1 : 0;
@@ -72,13 +70,11 @@ public class RVUserService {
 
     public Integer UpdateRvUser(RvUser rvUser, Integer user_id){
         UpdateOrDeleteCheckParam(rvUser, user_id);
-        rvUser.setUpdateTime(System.currentTimeMillis());
         return rvUserMapper.EditRvUser(rvUser);
     }
 
     public Integer DeleteRvUser(RvUser rvUser, Integer user_id){
         UpdateOrDeleteCheckParam(rvUser, user_id);
-        rvUser.setUpdateTime(System.currentTimeMillis());
         return rvUserMapper.DeleteRvUser(rvUser);
     }
 

@@ -27,7 +27,6 @@ public class InventoryService {
 
     public Integer UpdateGoodsStatus(Inventory inventory, Integer user_id){
         CheckParam(inventory, user_id);
-        inventory.setUpdateTime(System.currentTimeMillis());
         return inventoryMapper.EditInventoryStatus(inventory);
     }
 
@@ -50,7 +49,6 @@ public class InventoryService {
 
     public Integer UpdateGoodsSkuInventory(Inventory inventory, Integer userId){
         checkParamUtil.CheckParamUserId(userId);
-        inventory.setUpdateTime(System.currentTimeMillis());
         if(inventory.getInv() < 0){
             logger.error(userId + "用户userId更新库存失败：" + inventory.getInv());
             throw new ErrorException(ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.code(), ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.msg());
@@ -60,7 +58,6 @@ public class InventoryService {
 
     public Integer UpdateGoodsSkuCap(Inventory inventory, Integer userId){
         checkParamUtil.CheckParamUserId(userId);
-        inventory.setUpdateTime(System.currentTimeMillis());
         if(inventory.getCap() < 0){
             logger.error(userId + "用户userId更新容量失败：" + inventory.getCap());
             throw new ErrorException(ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.code(), ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.msg());

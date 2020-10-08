@@ -37,8 +37,6 @@ public class RefundsService {
         CheckParam(refunds, userId);
         Integer refundsId = randomUtil.getId("refundsMapper");
         refunds.setRefundId(refundsId);
-        refunds.setCreateTime(System.currentTimeMillis());
-        refunds.setUpdateTime(System.currentTimeMillis());
         if(refundsMapper.CreateRefund(refunds) == 1) {
             logger.info(refundsId + "创建refundId成功");
             refundsMapper.UpdateRefunds(refundsId);
@@ -46,8 +44,6 @@ public class RefundsService {
             for (int i = 0; i < subRefunds.length; i++) {
                 Integer subRefundsId = randomUtil.getId("subRefundsMapper");
                 subRefunds[i].setSubRefundId(subRefundsId);
-                subRefunds[i].setCreateTime(System.currentTimeMillis());
-                subRefunds[i].setUpdateTime(System.currentTimeMillis());
                 if(subRefundsMapper.CreateSubRefund(subRefunds[i]) == 1){
                     logger.info(subRefunds[i].getSubOrderId() + "创建subRefundId成功");
                 }else{

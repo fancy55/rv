@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface RefundsMapper {
-    @Insert("insert into refunds(refund_id,order_id,user_id,status,refund_amount,refund_mode,refund_type,refund_reason,refund_time,create_time,update_time,version) values(#{refund_id},#{order_id},#{user_id},#{status},#{refund_amount},#{refund_mode},#{refund_type},#{refund_reason},#{refund_time},#{create_time},#{update_time},0)")
+    @Insert("insert into refunds(refund_id,order_id,user_id,status,refund_amount,refund_mode,refund_type,refund_reason,refund_time,create_time,update_time,version) values(#{refund_id},#{order_id},#{user_id},#{status},#{refund_amount},#{refund_mode},#{refund_type},#{refund_reason},#{refund_time},now(),now(),0)")
     Integer CreateRefund(Refunds refunds);
 
     @Select("select * from refunds where refund_id = #{refundId}")
@@ -20,6 +20,6 @@ public interface RefundsMapper {
     @Select("select * from refunds where user_id = #{userId}")
     Refunds[] FindRefundByUserId(Integer userId);
 
-    @Update("update refunds set status=#{status} where refund_id=#{refundId}")
+    @Update("update refunds set status=#{status},update_time=now() where refund_id=#{refundId}")
     Integer UpdateRefunds(Integer refundId);
 }

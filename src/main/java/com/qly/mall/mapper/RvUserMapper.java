@@ -8,10 +8,10 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface RvUserMapper {
-    @Insert("insert into rv_user_info(user_id,rv_id_card,encrpy_rv_id_card,real_name,create_time,update_time,version,status) values(#{user_id},#{rv_id_card},#{encrpy_rv_id_card},#{real_name},#{create_time},#{update_time},#{version},status=#{status})")
+    @Insert("insert into rv_user_info(user_id,rv_id_card,encrpy_rv_id_card,real_name,create_time,update_time,version,status) values(#{user_id},#{rv_id_card},#{encrpy_rv_id_card},#{real_name},now(),now(),#{version},status=#{status})")
     Integer AddRvUser(RvUser rvUser);
 
-    @Update("update rv_user_info set real_name=#{real_name},rv_id_card=#{rv_id_card},encrpy_rv_id_card=#{encrpy_rv_id_card},update_time=#{update_time},version=version+1 where user_id=#{user_id} and num=#{num}")
+    @Update("update rv_user_info set real_name=#{real_name},rv_id_card=#{rv_id_card},encrpy_rv_id_card=#{encrpy_rv_id_card},update_time=now(),version=version+1 where user_id=#{user_id} and num=#{num}")
     Integer EditRvUser(RvUser rvUser);
 
     @Update("update rv_user_info set status=0 where user_id=#{user_id}")

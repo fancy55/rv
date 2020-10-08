@@ -40,8 +40,6 @@ public class OrdersService {
 
         Integer order_id = randomUtil.getId("ordersMapper");
         orders.setUserId(order_id);
-        orders.setCreateTime(System.currentTimeMillis());
-        orders.setUpdateTime(System.currentTimeMillis());
         orders.setOrderStatus(Orders.OrderStatus.CREATED);
         if(orders.getPayPrice() == 0)orders.setPayType(Orders.PayType.ZERO);
         else orders.setPayType(Orders.PayType.OA); //OA支付
@@ -116,22 +114,18 @@ public class OrdersService {
     public Integer OAPayOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
         orders.setOrderStatus(Orders.OrderStatus.PAID);
-        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CancelOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
         orders.setOrderStatus(Orders.OrderStatus.CANCELED);
-        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CloseOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
-        orders.setCloseTime(System.currentTimeMillis());
         orders.setOrderStatus(Orders.OrderStatus.CLOSE);
-        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 

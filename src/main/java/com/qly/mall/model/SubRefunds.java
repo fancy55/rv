@@ -3,6 +3,8 @@ package com.qly.mall.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @ApiModel("子退款")
 public class SubRefunds {
@@ -15,7 +17,7 @@ public class SubRefunds {
     Integer refundType;
     Integer refundMode;
     String reasonReason;
-    Long createTime;
-    Long updateTime;
+    Date createTime;
+    Date updateTime;
     Integer version;
 }

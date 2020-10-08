@@ -3,6 +3,8 @@ package com.qly.mall.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @ApiModel("用户信息")
 public class UserInfo {
@@ -11,8 +13,8 @@ public class UserInfo {
     String wechat;
     String password;
     String nickName;
-    Long createTime;
-    Long updateTime;
+    Date createTime;
+    Date updateTime;
     Integer userStatus;
     Integer userType;
     String photo;

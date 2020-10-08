@@ -3,6 +3,8 @@ package com.qly.mall.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @ApiModel("库存")
 public class Inventory {
@@ -13,8 +15,8 @@ public class Inventory {
     Integer status; //0:软删除、1：上架、2：下架
     Integer inv;
     Integer cap;
-    Long createTime;
-    Long updateTime;
+    Date createTime;
+    Date updateTime;
     Integer version;
 
     public static class inventoryStatus{

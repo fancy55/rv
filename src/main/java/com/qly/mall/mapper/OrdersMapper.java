@@ -14,10 +14,10 @@ public interface OrdersMapper {
     @Select("select user_id from orders where order_id = #{order_id}")
     Integer FindOrderByOrderId(Integer orderId);
 
-    @Update("update orders set status=#{status},close_time=#{closeTime},update_time=#{update_time},version=version+1 where order_id=#{order_id}")
+    @Update("update orders set status=#{status},close_time=now(),update_time=now(),version=version+1 where order_id=#{order_id}")
     Integer UpdateOrder(Orders orders);
 
-    @Update("update orders set status=#{status},update_time=#{updateTime},version=version+1 where order_id=#{order_id}")
+    @Update("update orders set status=#{status},update_time=now(),version=version+1 where order_id=#{order_id}")
     Integer UpdateOrderStatus(Integer status, Long updateTime, Integer orderId);
 
     @Select("select * from orders where order_id = #{order_id}")

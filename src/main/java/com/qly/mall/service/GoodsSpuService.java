@@ -32,8 +32,6 @@ public class GoodsSpuService {
         CheckParam(goodsSpu, user_id);
         Integer spuId = randomUtil.getId("goodsSpuMapper");
         goodsSpu.setSpuId(spuId);
-        goodsSpu.setCreateTime(System.currentTimeMillis());
-        goodsSpu.setUpdateTime(System.currentTimeMillis());
         return goodsSpuMapper.AddSpu(goodsSpu);
     }
 
@@ -59,7 +57,6 @@ public class GoodsSpuService {
 
     public Integer UpdateGoodsSpu(GoodsSpu newGoodsSpu, Integer user_id){
         CheckParam(newGoodsSpu, user_id);
-        newGoodsSpu.setUpdateTime(System.currentTimeMillis());
         return goodsSpuMapper.UpdateSpu(newGoodsSpu);
     }
 

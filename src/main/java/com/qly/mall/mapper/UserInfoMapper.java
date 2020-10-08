@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserInfoMapper {
-    @Insert("insert into user_info(user_id,phone,wechat,password,status,nick_name,create_time,update_time,photo,type) values(#{user_id},#{phone},#{wechat},#{password},#{status},#{nick_name},#{create_time},#{update_time},#{photo},#{type})")
+    @Insert("insert into user_info(user_id,phone,wechat,password,status,nick_name,create_time,update_time,photo,type,version) values(#{userId},#{phone},#{wechat},#{password},#{userStatus},#{nickName},#{createTime},#{updateTime},#{photo},#{userType},0)")
     Integer Register(UserInfo userInfo);
 
-    @Select("select user_id from user where phone = #{phone} and password = #{password}")
+    @Select("select user_id from user_info where phone = #{phone} and password = #{password}")
     Integer LoginWithPhone(@Param("phone")String phone, @Param("password")String password);
 
-    @Select("select user_id from user where user_id = #{user_id} and password = #{password}")
+    @Select("select user_id from user_info where user_id = #{user_id} and password = #{password}")
     Integer LoginWithUserId(@Param("user_id")Integer userId, @Param("password")String password);
 
     @Update("update user_info set status = 0 where phone = #{phone}")
@@ -35,7 +35,7 @@ public interface UserInfoMapper {
     @Update("update user_info set password = #{password} where user_id = #{user_id}")
     void UpdatePasswordByUserId(@Param("user_id")Integer userId, @Param("password")String password);
 
-    @Update("update user_info set password = #{password} where phone = #{phone}")
+    @Update("update user_info set password = #{password},update_time=now(),version=version+1 where phone = #{phone}")
     Integer UpdatePasswordByPhone(@Param("phone")String phone, @Param("password")String password);
 
     @Update("update user_info set photo = #{photo} where user_id = #{user_id}")

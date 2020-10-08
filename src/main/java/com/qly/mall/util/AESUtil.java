@@ -39,6 +39,7 @@ public class AESUtil {
             byte[] byteContent = content.getBytes("utf-8");
             cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化为加密模式的密码器
             byte[] result = cipher.doFinal(byteContent);// 加密
+            System.out.println(result+"===============result");
             return result;
         } catch (Exception e) {
             logger.error("加密失败");

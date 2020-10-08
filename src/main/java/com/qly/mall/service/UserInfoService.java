@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -31,13 +31,14 @@ public class UserInfoService {
         CheckParamRegister(userInfo, type);
         Integer user_id = randomUtil.getId("userInfoMapper");
         System.out.println(user_id+"==================");
-        userInfo.setCreateTime(System.currentTimeMillis());
-        userInfo.setUpdateTime(System.currentTimeMillis());
+        userInfo.setCreateTime(new Date());
+        userInfo.setUpdateTime(new Date());
         userInfo.setUserId(user_id);
+        userInfo.setUserType(type);
         if(userInfo.getNickName() == null)userInfo.setNickName("用户"+user_id);
         userInfo.setUserStatus(UserInfo.UserStatus.NORMAL);
         userInfo.setPhoto("http://47.104.191.228:8089/photo/leave.png");//默认头像
-        String encrypPassword = Arrays.toString(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy"));
+        String encrypPassword = new String(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy"));
         userInfo.setPassword(encrypPassword);
         System.out.println(encrypPassword+"==================");
         if(userInfoMapper.Register(userInfo) == 1) {
@@ -51,7 +52,7 @@ public class UserInfoService {
 
     public Integer LoginByPhoneAndPassword(UserInfo userInfo){
         CheckParam(userInfo);
-        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(), Arrays.toString(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy")));
+        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(), new String(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy")));
         if(user_id == null){
             logger.info("登录失败");
             throw new  ErrorException(ErrorNo.LOGIN_FAIL.code(), ErrorNo.LOGIN_FAIL.msg());
@@ -63,7 +64,7 @@ public class UserInfoService {
 
     public Integer AlterPassword(UserInfo userInfo, String newPassword){
         CheckParamPhoneAndPassword(userInfo);
-        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), Arrays.toString(aesUtil.encrypt(newPassword, "qinleyiTestEncodeFancy")));
+        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), new String(aesUtil.encrypt(newPassword, "qinleyiTestEncodeFancy")));
         if(user_id == 0){
             logger.info("更新密码失败");
             throw new  ErrorException(ErrorNo.UPDATE_PASSWORD_FAIL.code(), ErrorNo.UPDATE_PASSWORD_FAIL.msg());

@@ -16,10 +16,10 @@ public class Orders {
     Integer totalPrice;
     Integer payPrice;
     String payInfo;
-    Long createTime;
-    Long updateTime;
-    Long payTime;
-    Long closeTime;
+    Date createTime;
+    Date updateTime;
+    Date payTime;
+    Date closeTime;
     Integer version;
     Integer orderStatus;
     Integer payType;
