@@ -115,7 +115,7 @@ encrypt:
 photo:
   info:
     url: http://150.158.115.210:8089/photo
-    path: /root/vr/photo
+    path: /root/vr/rv
     type: .jpg
 
 async:

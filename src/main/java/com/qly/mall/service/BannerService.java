@@ -35,6 +35,7 @@ public class BannerService {
             files.transferTo(f); //把 MultipartFile 转换成 File // getOriginalFilename()得到原来的文件名在客户机的文件系统名称
             map.put(0, photoConfig.getUrl() +"/"+uuid+photoConfig.getType());
         }catch (IOException e){
+            logger.error(userId + "创建banner失败");
             throw new ErrorException(ErrorNo.CREATE_Banner_FAIL.code(), ErrorNo.CREATE_Banner_FAIL.msg());
         }
         logger.info(userId + "创建banner成功");
