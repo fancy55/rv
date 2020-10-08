@@ -1,7 +1,5 @@
 package com.qly.mall.controller;
 
-import com.qly.mall.model.GoodsSku;
-import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Inventory;
 import com.qly.mall.service.InventoryService;
 import io.swagger.annotations.Api;
@@ -31,7 +29,7 @@ public class InventoryController {
         return inventoryService.UpdateGoodsSkuInventory(inventory, userId);
     }
 
-    @PostMapping("update")
+    @PostMapping("update/cap")
     @ApiOperation("更新商品容量")
     public Integer UpdateGoodsSkuCap(@RequestBody @ApiParam(name="Inventory",value="inventory",required=true)Inventory inventory,
                                      @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
