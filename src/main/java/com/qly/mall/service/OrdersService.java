@@ -5,7 +5,6 @@ import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.*;
 import com.qly.mall.model.*;
 import com.qly.mall.util.RandomUtil;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +40,8 @@ public class OrdersService {
 
         Integer order_id = randomUtil.getId("ordersMapper");
         orders.setUserId(order_id);
-        orders.setCreateTime(Time.now());
-        orders.setUpdateTime(Time.now());
+        orders.setCreateTime(System.currentTimeMillis());
+        orders.setUpdateTime(System.currentTimeMillis());
         orders.setOrderStatus(Orders.OrderStatus.CREATED);
         if(orders.getPayPrice() == 0)orders.setPayType(Orders.PayType.ZERO);
         else orders.setPayType(Orders.PayType.OA); //OA支付
@@ -99,7 +98,7 @@ public class OrdersService {
                 logger.error(subOrder.getSubOrderId() + "子订单中商品已下架" + subOrder.getSkuId());
                 throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
-            if (skuGoods.getSaleEnd() > Time.now() || skuGoods.getSaleStart() < Time.now()) {
+            if (skuGoods.getSaleEnd() > System.currentTimeMillis() || skuGoods.getSaleStart() < System.currentTimeMillis()) {
                 logger.error(subOrder.getSubOrderId() + "子订单中商品没有正在出售中" + subOrder.getSkuId());
                 throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
@@ -117,22 +116,22 @@ public class OrdersService {
     public Integer OAPayOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
         orders.setOrderStatus(Orders.OrderStatus.PAID);
-        orders.setUpdateTime(Time.now());
+        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CancelOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
         orders.setOrderStatus(Orders.OrderStatus.CANCELED);
-        orders.setUpdateTime(Time.now());
+        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CloseOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
-        orders.setCloseTime(Time.now());
+        orders.setCloseTime(System.currentTimeMillis());
         orders.setOrderStatus(Orders.OrderStatus.CLOSE);
-        orders.setUpdateTime(Time.now());
+        orders.setUpdateTime(System.currentTimeMillis());
         return ordersMapper.UpdateOrder(orders);
     }
 

@@ -22,6 +22,8 @@ public enum ErrorNo implements BaseErrorInterface {
     CREATE_Banner_FAIL("128", "创建banner链接失败"),
     UPDATE_GOODS_INVENTORY_FAIL("129", "更新商品库存失败"),
     UPDATE_GOODS_CAPACITY_FAIL("130", "更新商品容量失败"),
+    ENCRYPT_FAIL("131", "加密失败"),
+    DECRYPT_FAIL("132", "解密失败"),
 
     SUCCESS("200","成功"),
 

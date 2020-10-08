@@ -5,7 +5,7 @@ import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.GoodsSkuMapper;
 import com.qly.mall.mapper.InventoryMapper;
 import com.qly.mall.mapper.UserInfoMapper;
-import com.qly.mall.service.GoodsSkuService;
+import com.qly.mall.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +33,19 @@ public class CheckParamUtil {
         return userId1;
     }
 
-    public void CheckParamUserId(Integer user_id){
-        if(user_id == null) {
+    public void CheckParamUserId(Integer user_id) {
+        if (user_id == null) {
             logger.error(user_id + "参数userId错误");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
-        if(userInfoMapper.FindUserByUserId(user_id) == null){
+        UserInfo user = userInfoMapper.FindUserByUserId(user_id);
+        if (userInfoMapper.FindUserByUserId(user_id) == null) {
             logger.error(user_id + "用户userId不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
+        }
+        if (!user.getUserType().equals(UserInfo.UserType.SUPER)) {
+            logger.error(user_id + "用户userId没有权限");
+            throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
         }
     }
 }

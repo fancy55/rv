@@ -42,31 +42,31 @@ public class RandomUtil {
             id = Integer.parseInt(new String(stringBuffer));
             switch (choose) {
                 case "userInfoMapper":
-                    if (userInfoMapper.FindUserByUserId(id) == null)
+                    if (userInfoMapper.FindUserByUserId(id) != null)
                         stringBuffer = null;
                     break;
                 case "subOrdersMapper":
-                    if(subOrdersMapper.FindSubOrderBySubOrderId(id) == null)
+                    if(subOrdersMapper.FindSubOrderBySubOrderId(id) != null)
                         stringBuffer = null;
                     break;
                 case "ordersMapper":
-                    if(ordersMapper.FindOrderByOrderId(id) == null)
+                    if(ordersMapper.FindOrderByOrderId(id) != null)
                         stringBuffer = null;
                     break;
                 case "subRefundsMapper":
-                    if(subRefundsMapper.FindSubRefundsBySubRefundId(id) == null)
+                    if(subRefundsMapper.FindSubRefundsBySubRefundId(id) != null)
                         stringBuffer = null;
                     break;
                 case "refundsMapper":
-                    if(refundsMapper.FindRefundByRefundId(id) == null)
+                    if(refundsMapper.FindRefundByRefundId(id) != null)
                         stringBuffer = null;
                     break;
                 case "goodsSpuMapper":
-                    if(goodsSpuMapper.FindSpuGoodsBySpuId(id) == null)
+                    if(goodsSpuMapper.FindSpuGoodsBySpuId(id) != null)
                         stringBuffer = null;
                     break;
                 case "goodsSkuMapper":
-                    if(goodsSkuMapper.FindSkuGoodsBySkuId(id) == null)
+                    if(goodsSkuMapper.FindSkuGoodsBySkuId(id) != null)
                         stringBuffer = null;
                     break;
                 default:

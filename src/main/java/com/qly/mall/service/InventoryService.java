@@ -4,12 +4,9 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.InventoryMapper;
 import com.qly.mall.mapper.UserInfoMapper;
-import com.qly.mall.model.GoodsSku;
-import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Inventory;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.CheckParamUtil;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,7 @@ public class InventoryService {
 
     public Integer UpdateGoodsStatus(Inventory inventory, Integer user_id){
         CheckParam(inventory, user_id);
-        inventory.setUpdateTime(Time.now());
+        inventory.setUpdateTime(System.currentTimeMillis());
         return inventoryMapper.EditInventoryStatus(inventory);
     }
 
@@ -53,7 +50,7 @@ public class InventoryService {
 
     public Integer UpdateGoodsSkuInventory(Inventory inventory, Integer userId){
         checkParamUtil.CheckParamUserId(userId);
-        inventory.setUpdateTime(Time.now());
+        inventory.setUpdateTime(System.currentTimeMillis());
         if(inventory.getInv() < 0){
             logger.error(userId + "用户userId更新库存失败：" + inventory.getInv());
             throw new ErrorException(ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.code(), ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.msg());
@@ -63,7 +60,7 @@ public class InventoryService {
 
     public Integer UpdateGoodsSkuCap(Inventory inventory, Integer userId){
         checkParamUtil.CheckParamUserId(userId);
-        inventory.setUpdateTime(Time.now());
+        inventory.setUpdateTime(System.currentTimeMillis());
         if(inventory.getCap() < 0){
             logger.error(userId + "用户userId更新容量失败：" + inventory.getCap());
             throw new ErrorException(ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.code(), ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.msg());

@@ -17,8 +17,8 @@ public class UserInfoController {
 
     @PostMapping("register")
     @ApiOperation(value="手机号注册",notes="注册时头像为默认")
-    public Integer Register(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo,
-                            @RequestParam @ApiParam(name="Integer",value="用户类型",required=true)Integer type) {
+    public Integer Register(@RequestBody @ApiParam(name="userInfo",value="手机号+密码(长度>8，<20)",required=true) UserInfo userInfo,
+                            @RequestParam @ApiParam(name="type",value="用户类型",required=true)Integer type) {
         return userInfoService.Register(userInfo, type);
     }
 

@@ -4,11 +4,8 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.RvUserMapper;
 import com.qly.mall.mapper.UserInfoMapper;
-import com.qly.mall.model.GoodsSpu;
-import com.qly.mall.model.Inventory;
 import com.qly.mall.model.RvUser;
 import com.qly.mall.model.UserInfo;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +27,8 @@ public class RVUserService {
 
     public Integer CreateRvUser(RvUser rvUser, Integer user_id){
         CreateCheckParam(rvUser, user_id);
-        rvUser.setCreateTime(Time.now());
-        rvUser.setUpdateTime(Time.now());
+        rvUser.setCreateTime(System.currentTimeMillis());
+        rvUser.setUpdateTime(System.currentTimeMillis());
         Integer addStatus = rvUserMapper.AddRvUser(rvUser);
         Integer updateStatus = rvUserMapper.UpdateRvUserNum(rvUser);
         return (addStatus.equals(updateStatus) && updateStatus==1)?1 : 0;
@@ -75,13 +72,13 @@ public class RVUserService {
 
     public Integer UpdateRvUser(RvUser rvUser, Integer user_id){
         UpdateOrDeleteCheckParam(rvUser, user_id);
-        rvUser.setUpdateTime(Time.now());
+        rvUser.setUpdateTime(System.currentTimeMillis());
         return rvUserMapper.EditRvUser(rvUser);
     }
 
     public Integer DeleteRvUser(RvUser rvUser, Integer user_id){
         UpdateOrDeleteCheckParam(rvUser, user_id);
-        rvUser.setUpdateTime(Time.now());
+        rvUser.setUpdateTime(System.currentTimeMillis());
         return rvUserMapper.DeleteRvUser(rvUser);
     }
 

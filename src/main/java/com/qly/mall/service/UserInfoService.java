@@ -4,13 +4,15 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.AESUtil;
 import com.qly.mall.util.RandomUtil;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @Service
 @Transactional
@@ -21,25 +23,35 @@ public class UserInfoService {
     UserInfoMapper userInfoMapper;
     @Autowired
     RandomUtil randomUtil;
+    @Autowired
+    AESUtil aesUtil;
 
     public Integer Register(UserInfo userInfo, Integer type){
-        if(type == null)type = 0;
+        if(type < 0 || type > 2)type = 0;
         CheckParamRegister(userInfo, type);
         Integer user_id = randomUtil.getId("userInfoMapper");
-        userInfo.setCreateTime(Time.now());
-        userInfo.setUpdateTime(Time.now());
+        System.out.println(user_id+"==================");
+        userInfo.setCreateTime(System.currentTimeMillis());
+        userInfo.setUpdateTime(System.currentTimeMillis());
+        userInfo.setUserId(user_id);
+        if(userInfo.getNickName() == null)userInfo.setNickName("用户"+user_id);
+        userInfo.setUserStatus(UserInfo.UserStatus.NORMAL);
+        userInfo.setPhoto("http://47.104.191.228:8089/photo/leave.png");//默认头像
+        String encrypPassword = Arrays.toString(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy"));
+        userInfo.setPassword(encrypPassword);
+        System.out.println(encrypPassword+"==================");
         if(userInfoMapper.Register(userInfo) == 1) {
             logger.info(userInfo.getPhone() + "注册成功");
         }else{
             logger.info(userInfo.getPhone() + "注册失败");
-            throw new  ErrorException(ErrorNo.REGISTER_FAIL.code(), ErrorNo.REGISTER_FAIL.msg());
+            throw new ErrorException(ErrorNo.REGISTER_FAIL.code(), ErrorNo.REGISTER_FAIL.msg());
         }
         return user_id;
     }
 
     public Integer LoginByPhoneAndPassword(UserInfo userInfo){
         CheckParam(userInfo);
-        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(),userInfo.getPassword());
+        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(), Arrays.toString(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy")));
         if(user_id == null){
             logger.info("登录失败");
             throw new  ErrorException(ErrorNo.LOGIN_FAIL.code(), ErrorNo.LOGIN_FAIL.msg());
@@ -51,7 +63,7 @@ public class UserInfoService {
 
     public Integer AlterPassword(UserInfo userInfo, String newPassword){
         CheckParamPhoneAndPassword(userInfo);
-        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), newPassword);
+        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), Arrays.toString(aesUtil.encrypt(newPassword, "qinleyiTestEncodeFancy")));
         if(user_id == 0){
             logger.info("更新密码失败");
             throw new  ErrorException(ErrorNo.UPDATE_PASSWORD_FAIL.code(), ErrorNo.UPDATE_PASSWORD_FAIL.msg());
@@ -72,24 +84,16 @@ public class UserInfoService {
         }
     }
 
-    public void CheckParamPhone(UserInfo userInfo){
-        CheckParam(userInfo);
-        if(userInfoMapper.FindUserIdByPhone(userInfo.getPhone()) == null){
-            logger.error(userInfo.getPhone() + "手机号不存在");
-            throw new ErrorException(ErrorNo.PHONE_HAVE_REGISTERED.code(), ErrorNo.PHONE_HAVE_REGISTERED.msg());
-        }
-    }
-
     public void CheckParamRegister(UserInfo userInfo, Integer type){
         CheckParam(userInfo);
         if(userInfoMapper.FindUserIdByPhone(userInfo.getPhone()) != null){
             logger.error(userInfo.getPhone() + "手机号已注册");
             throw new ErrorException(ErrorNo.PHONE_HAVE_REGISTERED.code(), ErrorNo.PHONE_HAVE_REGISTERED.msg());
         }
-        if(type < 0 || type > 3){
+        /*if(type < 0 || type > 3){
             logger.error(userInfo.getPhone() + "用户类型参数错误");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
-        }
+        }*/
     }
 
     public void CheckParamPhoneAndPassword(UserInfo userInfo){

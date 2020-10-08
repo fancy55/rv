@@ -8,7 +8,6 @@ import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.CheckParamUtil;
 import com.qly.mall.util.RandomUtil;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,8 @@ public class GoodsSpuService {
         CheckParam(goodsSpu, user_id);
         Integer spuId = randomUtil.getId("goodsSpuMapper");
         goodsSpu.setSpuId(spuId);
-        goodsSpu.setCreateTime(Time.now());
-        goodsSpu.setUpdateTime(Time.now());
+        goodsSpu.setCreateTime(System.currentTimeMillis());
+        goodsSpu.setUpdateTime(System.currentTimeMillis());
         return goodsSpuMapper.AddSpu(goodsSpu);
     }
 
@@ -60,7 +59,7 @@ public class GoodsSpuService {
 
     public Integer UpdateGoodsSpu(GoodsSpu newGoodsSpu, Integer user_id){
         CheckParam(newGoodsSpu, user_id);
-        newGoodsSpu.setUpdateTime(Time.now());
+        newGoodsSpu.setUpdateTime(System.currentTimeMillis());
         return goodsSpuMapper.UpdateSpu(newGoodsSpu);
     }
 

@@ -3,17 +3,12 @@ package com.qly.mall.service;
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.GoodsSkuMapper;
-import com.qly.mall.mapper.GoodsSpuMapper;
 import com.qly.mall.mapper.InventoryMapper;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.GoodsSku;
-import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Inventory;
-import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.CheckParamUtil;
 import com.qly.mall.util.RandomUtil;
-import io.swagger.models.auth.In;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,30 +33,18 @@ public class GoodsSkuService {
         CheckParam(goodsSku, user_id);
         Integer skuId = randomUtil.getId("goodsSkuMapper");
         goodsSku.setSkuId(skuId);
-        goodsSku.setCreateTime(Time.now());
-        goodsSku.setUpdateTime(Time.now());
+        goodsSku.setCreateTime(System.currentTimeMillis());
+        goodsSku.setUpdateTime(System.currentTimeMillis());
         inventory.setSkuId(skuId);
-        inventory.setUpdateTime(Time.now());
-        inventory.setCreateTime(Time.now());
+        inventory.setUpdateTime(System.currentTimeMillis());
+        inventory.setCreateTime(System.currentTimeMillis());
         Integer addSkuStatus = goodsSkuMapper.AddSku(goodsSku);
         Integer addInvStatus = inventoryMapper.AddInventory(inventory);
         return (addSkuStatus.equals(addInvStatus) && addSkuStatus==1)?1 : 0;
     }
 
     public void CheckParam(GoodsSku goodsSku, Integer user_id){
-        if(user_id == null) {
-            logger.error(user_id + "参数userId错误");
-            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
-        }
-        UserInfo user = userInfoMapper.FindUserByUserId(user_id);
-        if(user == null){
-            logger.error(user_id + "用户userId不存在");
-            throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
-        }
-        if(!user.getUserStatus().equals(UserInfo.UserType.SUPER)){
-            logger.error(user_id + "用户userId没有权限");
-            throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
-        }
+        checkParamUtil.CheckParamUserId(user_id);
         if(goodsSku.getCurrentPrice() >= goodsSku.getOriginPrice() || goodsSku.getOriginPrice() < 0){
             logger.error("创建价格为" + goodsSku.getOriginPrice() + "，不应该小于0");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
@@ -70,7 +53,7 @@ public class GoodsSkuService {
 
     public Integer UpdateGoodsSku(GoodsSku newGoodsSku, Integer user_id){
         CheckParam(newGoodsSku, user_id);
-        newGoodsSku.setUpdateTime(Time.now());
+        newGoodsSku.setUpdateTime(System.currentTimeMillis());
         return goodsSkuMapper.UpdateSpu(newGoodsSku);
     }
 

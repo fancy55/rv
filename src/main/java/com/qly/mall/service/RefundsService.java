@@ -11,7 +11,6 @@ import com.qly.mall.model.Refunds;
 import com.qly.mall.model.SubRefunds;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.RandomUtil;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +37,17 @@ public class RefundsService {
         CheckParam(refunds, userId);
         Integer refundsId = randomUtil.getId("refundsMapper");
         refunds.setRefundId(refundsId);
-        refunds.setCreateTime(Time.now());
-        refunds.setUpdateTime(Time.now());
+        refunds.setCreateTime(System.currentTimeMillis());
+        refunds.setUpdateTime(System.currentTimeMillis());
         if(refundsMapper.CreateRefund(refunds) == 1) {
             logger.info(refundsId + "创建refundId成功");
             refundsMapper.UpdateRefunds(refundsId);
-            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUND_PROCESS, Time.now(), refunds.getOrderId());
+            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUND_PROCESS, System.currentTimeMillis(), refunds.getOrderId());
             for (int i = 0; i < subRefunds.length; i++) {
                 Integer subRefundsId = randomUtil.getId("subRefundsMapper");
                 subRefunds[i].setSubRefundId(subRefundsId);
-                subRefunds[i].setCreateTime(Time.now());
-                subRefunds[i].setUpdateTime(Time.now());
+                subRefunds[i].setCreateTime(System.currentTimeMillis());
+                subRefunds[i].setUpdateTime(System.currentTimeMillis());
                 if(subRefundsMapper.CreateSubRefund(subRefunds[i]) == 1){
                     logger.info(subRefunds[i].getSubOrderId() + "创建subRefundId成功");
                 }else{
@@ -56,7 +55,7 @@ public class RefundsService {
                     throw new  ErrorException(ErrorNo.CREATE_SUB_REFUND_FAIL.code(), ErrorNo.CREATE_SUB_REFUND_FAIL.msg());
                 }
             }
-            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUNDED, Time.now(), refunds.getOrderId());
+            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUNDED, System.currentTimeMillis(), refunds.getOrderId());
         }else{
             logger.info(refundsId + "创建refundsId失败");
             throw new  ErrorException(ErrorNo.CREATE_REFUND_FAIL.code(), ErrorNo.CREATE_REFUND_FAIL.msg());
