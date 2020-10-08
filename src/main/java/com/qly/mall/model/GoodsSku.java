@@ -16,7 +16,7 @@ public class GoodsSku {
     Long createTime;
     Long updateTime;
     Integer version;
-    Integer skuStatus;
+//    Integer skuStatus; //废弃
     Integer rvCarSize;
     Integer rvCarColor;
     Integer rvCarType;

@@ -2,12 +2,13 @@ package com.qly.mall.util;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 public class SmsUtil {
     final String host = "https://feginesms.market.alicloudapi.com";
     final String path = "/codeNotice";

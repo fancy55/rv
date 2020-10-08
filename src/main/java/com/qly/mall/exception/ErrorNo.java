@@ -19,6 +19,9 @@ public enum ErrorNo implements BaseErrorInterface {
     RV_USER_NOT_EXISTING("125", "不存在此旅人"),
     CREATE_REFUND_FAIL("126", "创建退款失败"),
     CREATE_SUB_REFUND_FAIL("127", "创建子退款失败"),
+    CREATE_Banner_FAIL("128", "创建banner链接失败"),
+    UPDATE_GOODS_INVENTORY_FAIL("129", "更新商品库存失败"),
+    UPDATE_GOODS_CAPACITY_FAIL("130", "更新商品容量失败"),
 
     SUCCESS("200","成功"),
 

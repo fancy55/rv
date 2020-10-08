@@ -31,10 +31,10 @@ public class GoodsSkuController {
         return goodsSkuService.UpdateGoodsSku(newGoodsSku, userId);
     }
 
-//    @PostMapping("edit/status")
-//    @ApiOperation("更新sku商品状态")
-//    public Integer UpdateGoodsSkuStatus(@RequestBody @ApiParam(name="GoodsSku",value="sku商品",required=true)GoodsSku goodsSku,
-//                                  @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
-//        return goodsSkuService.UpdateGoodsSkuStatus(goodsSku, userId);
-//    }
+    @GetMapping("get/skuId/sku")
+    @ApiOperation("根据skuId查询sku")
+    public GoodsSku GetGoodsSkuBySkuId(@RequestParam @ApiParam(name="Integer",value="skuId",required=true)Integer skuId,
+                                       @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+        return goodsSkuService.GetGoodsSkuBySkuId(skuId, userId);
+    }
 }

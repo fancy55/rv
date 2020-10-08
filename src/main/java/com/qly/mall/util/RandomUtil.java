@@ -4,11 +4,12 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
-@Service
+@Component
 public class RandomUtil {
     @Autowired
     UserInfoMapper userInfoMapper;

@@ -6,6 +6,7 @@ import com.qly.mall.mapper.GoodsSpuMapper;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.CheckParamUtil;
 import com.qly.mall.util.RandomUtil;
 import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class GoodsSpuService {
     UserInfoMapper userInfoMapper;
     @Autowired
     RandomUtil randomUtil;
+    @Autowired
+    CheckParamUtil checkParamUtil;
 
     public Integer CreateGoodsSpu(GoodsSpu goodsSpu, Integer user_id){
         CheckParam(goodsSpu, user_id);
@@ -61,9 +64,8 @@ public class GoodsSpuService {
         return goodsSpuMapper.UpdateSpu(newGoodsSpu);
     }
 
-    public Integer UpdateGoodsSpuStatus(GoodsSpu goodsSpu, Integer user_id){
-        CheckParam(goodsSpu, user_id);
-        goodsSpu.setUpdateTime(Time.now());
-        return goodsSpuMapper.EditSpuStatus(goodsSpu);
+    public GoodsSpu GetGoodsSpuBySpuId(Integer spuId, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSpuMapper.GetGoodsSpuBySpuId(spuId);
     }
 }

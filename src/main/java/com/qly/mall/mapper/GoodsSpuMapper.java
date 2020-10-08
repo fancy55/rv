@@ -11,7 +11,7 @@ public interface GoodsSpuMapper {
     @Select("select * from goods_spu where spuId = #{spuId}")
     GoodsSpu FindSpuGoodsBySpuId(Integer spuId);
 
-    @Insert("insert into goods_spu(spu_id,spu_name,price,status,banner,desc,start_pos,destination_pos,sites,special,route,tips,cate,create_time,update_time,version) values(#{spu_id},#{spu_name},#{price},#{status},#{banner},#{desc},#{start_pos},#{destination_pos},#{sites},#{special},#{route},#{tips},#{cate},#{create_time},#{update_time},0)")
+    @Insert("insert into goods_spu(spu_id,spu_name,price,banner,desc,start_pos,destination_pos,sites,special,route,tips,cate,create_time,update_time,version) values(#{spu_id},#{spu_name},#{price},#{banner},#{desc},#{start_pos},#{destination_pos},#{sites},#{special},#{route},#{tips},#{cate},#{create_time},#{update_time},0)")
     Integer AddSpu(GoodsSpu goodsSpu);
 
     @Update("update goods_spu set price=#{price},banner=#{banner},desc=#{desc},start_pos=#{start_pos},destination_pos=#{destination_pos},sites=#{sites},special=#{special},route=#{route},tips=#{tips},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
@@ -22,9 +22,6 @@ public interface GoodsSpuMapper {
 
     @Update("update goods_spu set banner=#{banner},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
     Integer EditSpuBanner(GoodsSpu goodsSpu);
-
-    @Update("update goods_spu set status=#{status},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
-    Integer EditSpuStatus(GoodsSpu goodsSpu);
 
     @Update("update goods_spu set desc=#{desc},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
     Integer EditSpuDesc(GoodsSpu goodsSpu);
@@ -49,4 +46,7 @@ public interface GoodsSpuMapper {
 
     @Update("update goods_spu set cate=#{cate},update_time=#{update_time},version=version+1 where spu_id=#{spu_id}")
     Integer EditSpuCate(GoodsSpu goodsSpu);
+
+    @Select("select * from goods_spu where spu_id=#{spuId}")
+    GoodsSpu GetGoodsSpuBySpuId(Integer spuId);
 }

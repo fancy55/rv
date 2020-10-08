@@ -8,6 +8,7 @@ import com.qly.mall.model.GoodsSku;
 import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Inventory;
 import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.CheckParamUtil;
 import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class InventoryService {
     InventoryMapper inventoryMapper;
     @Autowired
     UserInfoMapper userInfoMapper;
+    @Autowired
+    CheckParamUtil checkParamUtil;
 
     public Integer UpdateGoodsStatus(Inventory inventory, Integer user_id){
         CheckParam(inventory, user_id);
@@ -46,5 +49,25 @@ public class InventoryService {
             throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
         }
         logger.info(user_id + "进行操作：" + inventory);
+    }
+
+    public Integer UpdateGoodsSkuInventory(Inventory inventory, Integer userId){
+        checkParamUtil.CheckParamUserId(userId);
+        inventory.setUpdateTime(Time.now());
+        if(inventory.getInv() < 0){
+            logger.error(userId + "用户userId更新库存失败：" + inventory.getInv());
+            throw new ErrorException(ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.code(), ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.msg());
+        }
+        return inventoryMapper.EditInventoryInv(inventory);
+    }
+
+    public Integer UpdateGoodsSkuCap(Inventory inventory, Integer userId){
+        checkParamUtil.CheckParamUserId(userId);
+        inventory.setUpdateTime(Time.now());
+        if(inventory.getCap() < 0){
+            logger.error(userId + "用户userId更新容量失败：" + inventory.getCap());
+            throw new ErrorException(ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.code(), ErrorNo.UPDATE_GOODS_CAPACITY_FAIL.msg());
+        }
+        return inventoryMapper.EditInventoryCap(inventory);
     }
 }

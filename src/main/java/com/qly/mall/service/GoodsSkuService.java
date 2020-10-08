@@ -10,6 +10,7 @@ import com.qly.mall.model.GoodsSku;
 import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Inventory;
 import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.CheckParamUtil;
 import com.qly.mall.util.RandomUtil;
 import io.swagger.models.auth.In;
 import org.apache.tomcat.jni.Time;
@@ -30,6 +31,8 @@ public class GoodsSkuService {
     RandomUtil randomUtil;
     @Autowired
     InventoryMapper inventoryMapper;
+    @Autowired
+    CheckParamUtil checkParamUtil;
 
     public Integer CreateGoodsSku(GoodsSku goodsSku, Inventory inventory, Integer user_id){
         CheckParam(goodsSku, user_id);
@@ -71,9 +74,13 @@ public class GoodsSkuService {
         return goodsSkuMapper.UpdateSpu(newGoodsSku);
     }
 
-    public Integer UpdateGoodsSkuStatus(GoodsSku goodsSku, Integer user_id){
-        CheckParam(goodsSku, user_id);
-        goodsSku.setUpdateTime(Time.now());
-        return goodsSkuMapper.EditSkuStatus(goodsSku);
+    public GoodsSku GetGoodsSkuBySkuId(Integer skuId, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSkuMapper.GetGoodsSkuBySkuId(skuId);
+    }
+
+    public GoodsSku[] GetGoodsSkuBySpuId(Integer spuId, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSkuMapper.GetGoodsSkuBySpuId(spuId);
     }
 }
