@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Service
 @Transactional
 public class UserInfoService {
     static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
+    static final String key = "qinleyiTestEncodeFancy";
 
     @Autowired
     UserInfoMapper userInfoMapper;
@@ -30,7 +32,6 @@ public class UserInfoService {
         if(type < 0 || type > 2)type = 0;
         CheckParamRegister(userInfo, type);
         Integer user_id = randomUtil.getId("userInfoMapper");
-        System.out.println(user_id+"==================");
         userInfo.setCreateTime(new Date());
         userInfo.setUpdateTime(new Date());
         userInfo.setUserId(user_id);
@@ -38,9 +39,10 @@ public class UserInfoService {
         if(userInfo.getNickName() == null)userInfo.setNickName("用户"+user_id);
         userInfo.setUserStatus(UserInfo.UserStatus.NORMAL);
         userInfo.setPhoto("http://47.104.191.228:8089/photo/leave.png");//默认头像
-        String encrypPassword = new String(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy"));
+        //密码加密
+        byte[] encrypt = aesUtil.encrypt(userInfo.getPassword(), key);
+        String encrypPassword = aesUtil.parseByte2HexStr(encrypt);
         userInfo.setPassword(encrypPassword);
-        System.out.println(encrypPassword+"==================");
         if(userInfoMapper.Register(userInfo) == 1) {
             logger.info(userInfo.getPhone() + "注册成功");
         }else{
@@ -52,19 +54,22 @@ public class UserInfoService {
 
     public Integer LoginByPhoneAndPassword(UserInfo userInfo){
         CheckParam(userInfo);
-        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(), new String(aesUtil.encrypt(userInfo.getPassword(), "qinleyiTestEncodeFancy")));
+        byte[] encrypt = aesUtil.encrypt(userInfo.getPassword(), key);
+        Integer user_id = userInfoMapper.LoginWithPhone(userInfo.getPhone(), aesUtil.parseByte2HexStr(encrypt));
         if(user_id == null){
-            logger.info("登录失败");
+            logger.info(userInfo.getPhone()+"登录失败");
             throw new  ErrorException(ErrorNo.LOGIN_FAIL.code(), ErrorNo.LOGIN_FAIL.msg());
         }else{
-            logger.info("登录成功");
+            logger.info(userInfo.getPhone()+"登录成功");
         }
         return user_id;
     }
 
     public Integer AlterPassword(UserInfo userInfo, String newPassword){
         CheckParamPhoneAndPassword(userInfo);
-        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), new String(aesUtil.encrypt(newPassword, "qinleyiTestEncodeFancy")));
+        CheckParamNewPassword(userInfo, newPassword);
+        byte[] encrypt = aesUtil.encrypt(newPassword, key);
+        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), aesUtil.parseByte2HexStr(encrypt));
         if(user_id == 0){
             logger.info("更新密码失败");
             throw new  ErrorException(ErrorNo.UPDATE_PASSWORD_FAIL.code(), ErrorNo.UPDATE_PASSWORD_FAIL.msg());
@@ -85,6 +90,13 @@ public class UserInfoService {
         }
     }
 
+    public void CheckParamNewPassword(UserInfo userInfo, String newPassword){
+        if(newPassword == null || newPassword.length() < 8 || newPassword.length() >20){
+            logger.error(userInfo.getPhone() + "密码为空或格式不正确");
+            throw new ErrorException(ErrorNo.PASSWORD_EMPTY_OR_FORMAT_ERROR.code(), ErrorNo.PASSWORD_EMPTY_OR_FORMAT_ERROR.msg());
+        }
+    }
+
     public void CheckParamRegister(UserInfo userInfo, Integer type){
         CheckParam(userInfo);
         if(userInfoMapper.FindUserIdByPhone(userInfo.getPhone()) != null){
@@ -99,7 +111,8 @@ public class UserInfoService {
 
     public void CheckParamPhoneAndPassword(UserInfo userInfo){
         CheckParam(userInfo);
-        if(userInfoMapper.LoginWithPhone(userInfo.getPhone(), userInfo.getPassword()) == null){
+        byte[] encrypt = aesUtil.encrypt(userInfo.getPassword(), key);
+        if(userInfoMapper.LoginWithPhone(userInfo.getPhone(), aesUtil.parseByte2HexStr(encrypt)) == null){
             logger.error(userInfo.getPhone() + "用户不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
