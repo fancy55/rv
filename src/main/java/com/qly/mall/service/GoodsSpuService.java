@@ -45,7 +45,7 @@ public class GoodsSpuService {
             logger.error(user_id + "用户userId不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
-        if(!user.getUserStatus().equals(UserInfo.UserType.SUPER)){
+        if(!user.getStatus().equals(UserInfo.UserType.SUPER)){
             logger.error(user_id + "用户userId没有权限");
             throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
         }

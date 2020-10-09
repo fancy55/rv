@@ -5,7 +5,7 @@ import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.RvUserMapper;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.RvUser;
-import com.qly.mall.model.UserInfo;
+import com.qly.mall.util.CheckParamUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,41 +24,51 @@ public class RVUserService {
     UserInfoMapper userInfoMapper;
     @Autowired
     RvUserMapper rvUserMapper;
+    @Autowired
+    CheckParamUtil checkParamUtil;
 
     public Integer CreateRvUser(RvUser rvUser, Integer user_id){
-        CreateCheckParam(rvUser, user_id);
+        if(CheckParamRvUser(rvUser, user_id) == 1)return 1;
         Integer addStatus = rvUserMapper.AddRvUser(rvUser);
-        Integer updateStatus = rvUserMapper.UpdateRvUserNum(rvUser);
-        return (addStatus.equals(updateStatus) && updateStatus==1)?1 : 0;
+        Integer offset = rvUserMapper.FindRvUserNumByUserId(rvUser);
+        rvUser.setOffset(offset);
+        Integer updateStatus = rvUserMapper.UpdateRvUserOffset(rvUser);
+        return (addStatus==1 && updateStatus==1)?1:0;
     }
 
-    public void CheckParam(RvUser rvUser, Integer user_id){
-        if(user_id == null) {
-            logger.error(user_id + "参数userId错误");
-            throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
-        }
-        UserInfo user = userInfoMapper.FindUserByUserId(user_id);
-        if(user == null){
-            logger.error(user_id + "用户userId不存在");
+    public void CheckParam(RvUser rvUser, Integer user_id) {
+        checkParamUtil.CheckParamUserId(user_id);
+        if(rvUser.getUserId() == null || userInfoMapper.FindUserByUserId(rvUser.getUserId()) == null){
+            logger.error("userId:" + user_id + "的用户无法操作旅人信息");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
-        if(!user.getUserStatus().equals(UserInfo.UserType.SUPER)){
-            logger.error(user_id + "用户userId没有权限");
-            throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
+        if(rvUser.getRealName() == null || rvUser.getRvIdCard() == null){
+            logger.error("用户无法操作空旅人信息");
+            throw new ErrorException(ErrorNo.RV_USER_INFO_ERROR.code(), ErrorNo.RV_USER_INFO_ERROR.msg());
         }
     }
 
-    public void CreateCheckParam(RvUser rvUser, Integer user_id){
+    public Integer CheckParamRvUser(RvUser rvUser, Integer user_id){
         CheckParam(rvUser, user_id);
         RvUser had_rvUser = rvUserMapper.FindRvUserByIdCard(rvUser);
-        if(had_rvUser != null && had_rvUser.getStatus() != 0){
-            logger.error("已经存在此旅人信息" + rvUser + "，不能重复创建");
-            throw new ErrorException(ErrorNo.RV_USER_HAS_EXISTING.code(), ErrorNo.RV_USER_HAS_EXISTING.msg());
+        if(had_rvUser != null){
+            if(had_rvUser.getStatus() == 1) {
+                logger.error("已经存在此旅人信息" + rvUser + "，不能重复创建");
+                throw new ErrorException(ErrorNo.RV_USER_HAS_EXISTING.code(), ErrorNo.RV_USER_HAS_EXISTING.msg());
+            }else if(had_rvUser.getStatus() == 0){
+                logger.info("已删除的旅人信息重新创建" + rvUser);
+                rvUserMapper.UpdateRvUser(rvUser);
+                return 1;
+            }else{
+                logger.error("旅人信息状态参数错误");
+                throw new ErrorException(ErrorNo.RV_USER_INFO_ERROR.code(), ErrorNo.RV_USER_INFO_ERROR.msg());
+            }
         }
-        logger.info(user_id + "进行操作(创建旅客)：" + rvUser);
+        logger.info(user_id + "进行操作(创建旅人)：" + rvUser);
+        return 0;
     }
 
-    public void UpdateOrDeleteCheckParam(RvUser rvUser, Integer user_id) {
+    public void CheckParamUpdateOrDelete(RvUser rvUser, Integer user_id) {
         CheckParam(rvUser, user_id);
         RvUser had_rvUser = rvUserMapper.FindRvUserByIdCard(rvUser);
         if(had_rvUser == null || had_rvUser.getStatus() == 0){
@@ -69,24 +79,25 @@ public class RVUserService {
     }
 
     public Integer UpdateRvUser(RvUser rvUser, Integer user_id){
-        UpdateOrDeleteCheckParam(rvUser, user_id);
+        CheckParamUpdateOrDelete(rvUser, user_id);
         return rvUserMapper.EditRvUser(rvUser);
     }
 
     public Integer DeleteRvUser(RvUser rvUser, Integer user_id){
-        UpdateOrDeleteCheckParam(rvUser, user_id);
+        CheckParamUpdateOrDelete(rvUser, user_id);
         return rvUserMapper.DeleteRvUser(rvUser);
     }
 
     public List<RvUser> GetRvUsersByUserId(Integer user_id){
-        CheckParam(null, user_id);
+        checkParamUtil.CheckParamUserId(user_id);
         RvUser[] rvUser = rvUserMapper.FindRvUsersByUserId(user_id);
         List<RvUser> rvUserList = new ArrayList<>();
         for(RvUser user:rvUser){
-            RvUser packUser = new RvUser();
-            packUser.setRealName(user.getRealName());
-            packUser.setIdCard(user.getEncrpyIdCard());
-            rvUserList.add(packUser);
+//            RvUser packUser = new RvUser();
+//            packUser.setRealName(user.getRealName());
+//            packUser.setIdCard(user.getIdCard());
+//            packUser.setOffset(user.getOffset());
+            rvUserList.add(user);
         }
         return rvUserList;
     }

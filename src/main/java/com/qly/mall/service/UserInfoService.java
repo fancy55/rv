@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Service
@@ -35,9 +34,9 @@ public class UserInfoService {
         userInfo.setCreateTime(new Date());
         userInfo.setUpdateTime(new Date());
         userInfo.setUserId(user_id);
-        userInfo.setUserType(type);
+        userInfo.setType(type);
         if(userInfo.getNickName() == null)userInfo.setNickName("用户"+user_id);
-        userInfo.setUserStatus(UserInfo.UserStatus.NORMAL);
+        userInfo.setStatus(UserInfo.UserStatus.NORMAL);
         userInfo.setPhoto("http://47.104.191.228:8089/photo/leave.png");//默认头像
         //密码加密
         byte[] encrypt = aesUtil.encrypt(userInfo.getPassword(), key);

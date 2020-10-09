@@ -9,15 +9,14 @@ import java.util.Date;
 @Data
 @ApiModel("用户增加的旅行人信息")
 public class RvUser {
-    String idCard;
-    String encrpyIdCard;
+    String rvIdCard;
     String realName;
     Integer userId;
     Date createTime;
     Date updateTime;
     Integer version;
     Integer status;
-    Integer num;
+    Integer offset;
 
     static public class RvUserStatus{
         static public Integer DELETE = 0;

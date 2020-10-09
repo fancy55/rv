@@ -24,6 +24,8 @@ public enum ErrorNo implements BaseErrorInterface {
     UPDATE_GOODS_CAPACITY_FAIL("130", "更新商品容量失败"),
     ENCRYPT_FAIL("131", "加密失败"),
     DECRYPT_FAIL("132", "解密失败"),
+    RV_USER_INFO_ERROR("133", "旅人信息存在错误"),
+
 
     SUCCESS("200","成功"),
 

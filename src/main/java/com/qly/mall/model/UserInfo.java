@@ -15,8 +15,8 @@ public class UserInfo {
     String nickName;
     Date createTime;
     Date updateTime;
-    Integer userStatus;
-    Integer userType;
+    Integer status;
+    Integer type;
     String photo;
 
     public static class UserType{

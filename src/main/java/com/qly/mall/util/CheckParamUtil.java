@@ -43,7 +43,7 @@ public class CheckParamUtil {
             logger.error(user_id + "用户userId不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
-        if (!user.getUserType().equals(UserInfo.UserType.SUPER)) {
+        if (!user.getType().equals(UserInfo.UserType.SUPER)) {
             logger.error(user_id + "用户userId没有权限");
             throw new ErrorException(ErrorNo.USER_NOT_PERMISSION.code(), ErrorNo.USER_NOT_PERMISSION.msg());
         }
