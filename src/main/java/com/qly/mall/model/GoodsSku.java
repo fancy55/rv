@@ -8,7 +8,6 @@ import java.util.Date;
 @Data
 @ApiModel("商品sku")
 public class GoodsSku {
-    Integer id;
     Integer skuId;
     String skuName;
     Integer spuId;
@@ -18,18 +17,12 @@ public class GoodsSku {
     Date createTime;
     Date updateTime;
     Integer version;
-//    Integer skuStatus; //废弃
     Integer rvCarSize;
     Integer rvCarColor;
     Integer rvCarType;
-    Long saleStart;
-    Long saleEnd;
+    Date saleStart;
+    Date saleEnd;
     String banner;
-
-    public static class SkuStatus{
-        static public Integer ON_SHELF = 1;
-        static public Integer OFF_SHELF = 2;
-    }
 
     public static class RvCar{
         static public RvCarType carType;

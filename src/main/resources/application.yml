@@ -66,7 +66,7 @@ spring:
     throw-exception-if-no-handler-found: true
 
   application:
-    name: qly_fish
+    name: qly_mall
 
   encrypt:
     debug: false

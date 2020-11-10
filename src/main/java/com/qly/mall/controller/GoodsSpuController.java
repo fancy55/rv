@@ -23,28 +23,28 @@ public class GoodsSpuController {
     @PostMapping("create")
     @ApiOperation("创建spu商品")
     public Integer CreateGoodsSpu(@RequestBody @ApiParam(name="GoodsSpu",value="spu商品",required=true)GoodsSpu goodsSpu,
-                               @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+                               @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSpuService.CreateGoodsSpu(goodsSpu, userId);
     }
 
     @PostMapping("update")
     @ApiOperation("更新spu商品")
     public Integer UpdateGoodsSpu(@RequestBody @ApiParam(name="GoodsSpu",value="更新的spu商品",required=true)GoodsSpu newGoodsSpu,
-                                  @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+                                  @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSpuService.UpdateGoodsSpu(newGoodsSpu, userId);
     }
 
     @GetMapping("get/spuId/spu")
     @ApiOperation("根据spuId查询spu")
     public GoodsSpu GetGoodsSpuBySpuId(@RequestParam @ApiParam(name="Integer",value="spuId",required=true)Integer spuId,
-                                     @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+                                     @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSpuService.GetGoodsSpuBySpuId(spuId, userId);
     }
 
     @GetMapping("get/spuId/sku")
     @ApiOperation("根据spuId查询sku")
     public GoodsSku[] GetGoodsSkuBySpuId(@RequestParam @ApiParam(name="Integer",value="spuId",required=true)Integer spuId,
-                                         @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+                                         @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSkuService.GetGoodsSkuBySpuId(spuId, userId);
     }
 }

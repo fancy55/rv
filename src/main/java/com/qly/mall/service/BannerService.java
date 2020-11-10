@@ -36,6 +36,7 @@ public class BannerService {
             map.put(0, photoConfig.getUrl() +"/"+uuid+photoConfig.getType());
         }catch (IOException e){
             logger.error(userId + "创建banner失败");
+            e.printStackTrace();
             throw new ErrorException(ErrorNo.CREATE_Banner_FAIL.code(), ErrorNo.CREATE_Banner_FAIL.msg());
         }
         logger.info(userId + "创建banner成功");

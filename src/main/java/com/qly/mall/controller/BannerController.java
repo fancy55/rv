@@ -20,8 +20,9 @@ public class BannerController {
 
     @PostMapping("create")
     @ApiOperation("生成banner链接")
-    public String CreateBanner(@ApiParam(name="MultipartFile",value="banner",required=true) MultipartFile file,
-                                @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+    public String CreateBanner(@ApiParam(name="file",value="banner",required=true) MultipartFile file,
+                                @RequestParam @ApiParam(name="userId",value="userId",required=true) Integer userId){
+        System.out.println(file+"====");
         return bannerService.GetBannerURL(file, userId).get(0);
     }
 }

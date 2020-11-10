@@ -9,8 +9,9 @@ import java.util.Date;
 @ApiModel("商品spu")
 public class GoodsSpu {
     Integer spuId;
-    Integer spuName;
+    String spuName;
     String startPos;
+    String desc;
     String destinationPos;
     String sites;
     Integer price;

@@ -96,7 +96,7 @@ public class OrdersService {
                 logger.error(subOrder.getSubOrderId() + "子订单中商品已下架" + subOrder.getSkuId());
                 throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
-            if (skuGoods.getSaleEnd() > System.currentTimeMillis() || skuGoods.getSaleStart() < System.currentTimeMillis()) {
+            if (skuGoods.getSaleEnd().getTime() > System.currentTimeMillis() || skuGoods.getSaleStart().getTime() < System.currentTimeMillis()) {
                 logger.error(subOrder.getSubOrderId() + "子订单中商品没有正在出售中" + subOrder.getSkuId());
                 throw new ErrorException(ErrorNo.SKU_EXCEPTION.code(), ErrorNo.SKU_EXCEPTION.msg());
             }
