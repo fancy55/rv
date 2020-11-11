@@ -2,10 +2,7 @@ package com.qly.mall.service;
 
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
-import com.qly.mall.mapper.OrdersMapper;
-import com.qly.mall.mapper.RefundsMapper;
-import com.qly.mall.mapper.SubRefundsMapper;
-import com.qly.mall.mapper.UserInfoMapper;
+import com.qly.mall.mapper.*;
 import com.qly.mall.model.Orders;
 import com.qly.mall.model.Refunds;
 import com.qly.mall.model.SubRefunds;
@@ -31,19 +28,22 @@ public class RefundsService {
     @Autowired
     OrdersMapper ordersMapper;
     @Autowired
+    SubOrdersMapper subOrdersMapper;
+    @Autowired
     SubRefundsMapper subRefundsMapper;
 
     public Integer Refunds(Refunds refunds, SubRefunds[] subRefunds, Integer userId){
         CheckParam(refunds, userId);
         Integer refundsId = randomUtil.getId("refundsMapper");
         refunds.setRefundId(refundsId);
+        refunds.setStatus(Refunds.RefundStatus.PROCESSING);
         if(refundsMapper.CreateRefund(refunds) == 1) {
             logger.info(refundsId + "创建refundId成功");
-            refundsMapper.UpdateRefunds(refundsId);
-            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUND_PROCESS, System.currentTimeMillis(), refunds.getOrderId());
             for (int i = 0; i < subRefunds.length; i++) {
                 Integer subRefundsId = randomUtil.getId("subRefundsMapper");
+                System.out.println(subRefundsId);
                 subRefunds[i].setSubRefundId(subRefundsId);
+                subRefunds[i].setRefundId(refundsId);
                 if(subRefundsMapper.CreateSubRefund(subRefunds[i]) == 1){
                     logger.info(subRefunds[i].getSubOrderId() + "创建subRefundId成功");
                 }else{
@@ -51,7 +51,7 @@ public class RefundsService {
                     throw new  ErrorException(ErrorNo.CREATE_SUB_REFUND_FAIL.code(), ErrorNo.CREATE_SUB_REFUND_FAIL.msg());
                 }
             }
-            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUNDED, System.currentTimeMillis(), refunds.getOrderId());
+            ordersMapper.UpdateOrderStatus(Orders.OrderStatus.REFUND_PROCESS, refunds.getOrderId());
         }else{
             logger.info(refundsId + "创建refundsId失败");
             throw new  ErrorException(ErrorNo.CREATE_REFUND_FAIL.code(), ErrorNo.CREATE_REFUND_FAIL.msg());
@@ -64,6 +64,11 @@ public class RefundsService {
         if(refunds.getRefundAmount() < 0){
             logger.error("退款价格不应该小于0");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
+        }
+        Integer status = ordersMapper.FindOrdersStatusByOrderId(refunds.getOrderId());
+        if(refunds.getOrderId() == null || status != 3){
+            logger.error("无法对空订单或未支付订单退款");
+            throw new ErrorException(ErrorNo.ORDER_EMPTY_REFUND_FAIL.code(), ErrorNo.ORDER_EMPTY_REFUND_FAIL.msg());
         }
 
     }

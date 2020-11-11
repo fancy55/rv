@@ -31,10 +31,10 @@ public class PayOrder {
         return ordersService.CancelOrder(orders, userId);
     }
 
-    @PostMapping("close")
-    @ApiOperation("超时自动关闭")
-    public Integer CloseOrder(@RequestBody @ApiParam(name="Orders",value="orders",required=true) Orders orders,
-                               @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
-        return ordersService.CloseOrder(orders, userId);
-    }
+//    @PostMapping("close")
+//    @ApiOperation("超时自动关闭")
+//    public Integer CloseOrder(@RequestBody @ApiParam(name="Orders",value="orders",required=true) Orders orders,
+//                               @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+//        return ordersService.CloseOrder(orders, userId);
+//    }
 }

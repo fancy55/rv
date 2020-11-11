@@ -25,6 +25,7 @@ public enum ErrorNo implements BaseErrorInterface {
     ENCRYPT_FAIL("131", "加密失败"),
     DECRYPT_FAIL("132", "解密失败"),
     RV_USER_INFO_ERROR("133", "旅人信息存在错误"),
+    ORDER_EMPTY_REFUND_FAIL("134", "空订单或订单状态未支付退款错误"),
 
 
     SUCCESS("200","成功"),

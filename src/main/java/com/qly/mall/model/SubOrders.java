@@ -19,7 +19,7 @@ public class SubOrders {
     String encrypRvUserInfo;
     Integer originPrice;
     Integer payPrice;
-    Integer status;
+    Integer status;  //暂不用
     Date createTime;
     Date updateTime;
     Integer version;

@@ -8,9 +8,11 @@ import com.qly.mall.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -29,6 +31,8 @@ public class OrdersService {
     GoodsSkuMapper goodsSkuMapper;
     @Autowired
     InventoryMapper inventoryMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     public Integer CreateOrder(Orders orders, SubOrders[] subOrders, Integer userId){
         CheckParam(userId, orders, subOrders);
@@ -52,6 +56,9 @@ public class OrdersService {
                 subOrder.setStatus(Orders.OrderStatus.CREATED);
                 if (subOrdersMapper.CreateSubOrder(subOrder) == 1) {
                     logger.info(subOrder.getSubOrderId() + "创建subOrderId成功");
+                    //订单设置超时时间：30min
+                    ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
+                    operations.set("order"+order_id.toString(), orders.getUserId(), 30, TimeUnit.MINUTES);
                 } else {
                     logger.info(subOrder.getSubOrderId() + "创建subOrderId失败");
                     throw new ErrorException(ErrorNo.CREATE_SUBORDER_FAIL.code(), ErrorNo.CREATE_SUBORDER_FAIL.msg());
@@ -124,8 +131,8 @@ public class OrdersService {
         return ordersMapper.UpdateOrder(orders);
     }
 
-    public Integer CloseOrder(Orders orders, Integer userId){
-        CheckParam(userId, orders, null);
+    public Integer CloseOrder(Integer orderId){
+        Orders orders = ordersMapper.FindOrdersByOrderId(orderId);
         orders.setStatus(Orders.OrderStatus.CLOSE);
         return ordersMapper.UpdateOrder(orders);
     }

@@ -54,7 +54,7 @@ public class RandomUtil {
                         stringBuffer = null;
                     break;
                 case "subRefundsMapper":
-                    if(subRefundsMapper.FindSubRefundsBySubRefundId(id) != null)
+                    if(subRefundsMapper.FindSubRefundsBySubRefundId(id).length != 0)
                         stringBuffer = null;
                     break;
                 case "refundsMapper":

@@ -12,11 +12,11 @@ public class SubRefunds {
     Integer subRefundId;
     Integer orderId;
     Integer subOrderId;
-    Integer status;
+    Integer status; //暂不使用
     Integer refundAmount;
     Integer refundType;
     Integer refundMode;
-    String reasonReason;
+    String refundReason;
     Date createTime;
     Date updateTime;
     Integer version;

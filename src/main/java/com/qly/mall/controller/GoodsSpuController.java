@@ -38,14 +38,14 @@ public class GoodsSpuController {
 
     @GetMapping("get/spuId/spu")
     @ApiOperation("根据spuId查询spu")
-    public GoodsSpu GetGoodsSpuBySpuId(@RequestParam @ApiParam(name="Integer",value="spuId",required=true)Integer spuId,
+    public GoodsSpu GetGoodsSpuBySpuId(@RequestParam @ApiParam(name="spuId",value="spuId",required=true)Integer spuId,
                                      @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSpuService.GetGoodsSpuBySpuId(spuId, userId);
     }
 
     @GetMapping("get/spuId/sku")
     @ApiOperation("根据spuId查询sku")
-    public GoodsSku[] GetGoodsSkuBySpuId(@RequestParam @ApiParam(name="Integer",value="spuId",required=true)Integer spuId,
+    public GoodsSku[] GetGoodsSkuBySpuId(@RequestParam @ApiParam(name="spuId",value="spuId",required=true)Integer spuId,
                                          @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSkuService.GetGoodsSkuBySpuId(spuId, userId);
     }

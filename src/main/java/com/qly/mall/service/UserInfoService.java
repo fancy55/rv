@@ -31,8 +31,6 @@ public class UserInfoService {
         if(type < 0 || type > 2)type = 0;
         CheckParamRegister(userInfo, type);
         Integer user_id = randomUtil.getId("userInfoMapper");
-        userInfo.setCreateTime(new Date());
-        userInfo.setUpdateTime(new Date());
         userInfo.setUserId(user_id);
         userInfo.setType(type);
         if(userInfo.getNickName() == null)userInfo.setNickName("用户"+user_id);

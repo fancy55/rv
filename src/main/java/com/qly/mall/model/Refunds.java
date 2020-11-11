@@ -15,11 +15,13 @@ public class Refunds {
     Integer refundAmount;
     Integer refundType;
     Integer refundMode;
-    String reasonReason;
+    String refundReason;
     Date refundTime;
     Date createTime;
     Date updateTime;
     Integer version;
+    Integer productNum;
+    String subOrderIds;
 
     public static class RefundStatus{
         static public Integer CREATED = 1; //已创建，待审核

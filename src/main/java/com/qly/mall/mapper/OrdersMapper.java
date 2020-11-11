@@ -18,10 +18,13 @@ public interface OrdersMapper {
     Integer UpdateOrder(Orders orders);
 
     @Update("update orders set status=#{status},update_time=now(),version=version+1 where order_id=#{orderId}")
-    Integer UpdateOrderStatus(Integer status, Long updateTime, Integer orderId);
+    Integer UpdateOrderStatus(Integer status, Integer orderId);
 
     @Select("select * from orders where order_id = #{orderId}")
     Orders FindOrdersByOrderId(Integer orderId);
+
+    @Select("select status from orders where order_id = #{orderId}")
+    Integer FindOrdersStatusByOrderId(Integer orderId);
 
     @Select("select * from orders where user_id = #{userId} order by create_time desc")
     Orders[] FindOrderByUserId(Integer userId);
