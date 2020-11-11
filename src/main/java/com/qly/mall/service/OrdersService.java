@@ -39,21 +39,22 @@ public class OrdersService {
         //TODO:redis计数器限流
 
         Integer order_id = randomUtil.getId("ordersMapper");
-        orders.setUserId(order_id);
-        orders.setOrderStatus(Orders.OrderStatus.CREATED);
+        orders.setOrderId(order_id);
+        orders.setStatus(Orders.OrderStatus.CREATED);
         if(orders.getPayPrice() == 0)orders.setPayType(Orders.PayType.ZERO);
         else orders.setPayType(Orders.PayType.OA); //OA支付
         if(ordersMapper.CreateOrder(orders) == 1){
             logger.info(order_id + "创建orderId成功");
-            for(int i = 0;i < subOrders.length; i++){
+            for (SubOrders subOrder : subOrders) {
                 Integer sub_order_id = randomUtil.getId("subOrdersMapper");
-                subOrders[i].setSubOrderId(sub_order_id);
-                subOrders[i].setOrderId(order_id);
-                if(subOrdersMapper.CreateSubOrder(subOrders[i]) == 1){
-                    logger.info(subOrders[i].getSubOrderId() + "创建subOrderId成功");
-                }else{
-                    logger.info(subOrders[i].getSubOrderId() + "创建subOrderId失败");
-                    throw new  ErrorException(ErrorNo.CREATE_SUBORDER_FAIL.code(), ErrorNo.CREATE_SUBORDER_FAIL.msg());
+                subOrder.setSubOrderId(sub_order_id);
+                subOrder.setOrderId(order_id);
+                subOrder.setStatus(Orders.OrderStatus.CREATED);
+                if (subOrdersMapper.CreateSubOrder(subOrder) == 1) {
+                    logger.info(subOrder.getSubOrderId() + "创建subOrderId成功");
+                } else {
+                    logger.info(subOrder.getSubOrderId() + "创建subOrderId失败");
+                    throw new ErrorException(ErrorNo.CREATE_SUBORDER_FAIL.code(), ErrorNo.CREATE_SUBORDER_FAIL.msg());
                 }
             }
         }else{
@@ -113,25 +114,31 @@ public class OrdersService {
 
     public Integer OAPayOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
-        orders.setOrderStatus(Orders.OrderStatus.PAID);
+        orders.setStatus(Orders.OrderStatus.PAID);
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CancelOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
-        orders.setOrderStatus(Orders.OrderStatus.CANCELED);
+        orders.setStatus(Orders.OrderStatus.CANCELED);
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Integer CloseOrder(Orders orders, Integer userId){
         CheckParam(userId, orders, null);
-        orders.setOrderStatus(Orders.OrderStatus.CLOSE);
+        orders.setStatus(Orders.OrderStatus.CLOSE);
         return ordersMapper.UpdateOrder(orders);
     }
 
     public Orders GetOrderByOrderId(Integer orderId, Integer userId){
         CheckParamUserId(userId);
-        return ordersMapper.FindOrdersByOrderId(orderId);
+        Orders orders = ordersMapper.FindOrdersByOrderId(orderId);
+        SubOrders subOrders = subOrdersMapper.FindSubOrderByOrderId(orderId)[0];
+        orders.setSpuId(subOrders.getSpuId());
+        orders.setSpuName(subOrders.getSpuName());
+        orders.setSkuId(subOrders.getSkuId());
+        orders.setSkuName(subOrders.getSkuName());
+        return orders;
     }
 
     public SubOrders GetSubOrderBySubOrderId(Integer subOrderId, Integer userId){

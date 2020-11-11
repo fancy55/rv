@@ -53,7 +53,7 @@ public class InventoryService {
             logger.error(userId + "用户userId更新库存失败：" + inventory.getInv());
             throw new ErrorException(ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.code(), ErrorNo.UPDATE_GOODS_INVENTORY_FAIL.msg());
         }
-        return inventoryMapper.EditInventoryInv(inventory);
+        return inventoryMapper.BackInventoryInv(inventory);
     }
 
     public Integer UpdateGoodsSkuCap(Inventory inventory, Integer userId){

@@ -3,6 +3,7 @@ package com.qly.mall.mapper;
 import com.qly.mall.model.Inventory;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 @Mapper
@@ -16,15 +17,18 @@ public interface InventoryMapper {
     @Update("update inventory set status=#{status},update_time=now(),version=version+1 where sku_id=#{skuId}")
     Integer EditInventoryStatus(Inventory inventory);
 
-    @Update("update inventory set inv=#{inv},update_time=now(),version=version+1 where sku_id=#{skuId}")
-    Integer EditInventoryInv(Inventory inventory);
+    @Update("update inventory set inv=inv+1,update_time=now(),version=version+1 where sku_id=#{skuId}")
+    Integer BackInventoryInv(Inventory inventory);
 
-    @Update("update inventory set cap=#{cap},update_time=now(),version=version+1 where sku_id=#{skuId}")
+    @Update("update inventory set inv=inv-1,update_time=now(),version=version+1 where sku_id=#{skuId}")
+    Integer ReduceInventoryInv(Inventory inventory);
+
+    @Update("update inventory set cap=cap+#{cap},inv=inv+#{cap},update_time=now(),version=version+1 where sku_id=#{skuId}")
     Integer EditInventoryCap(Inventory inventory);
 
-    @Update("select * from inventory where sku_id=#{skuId}")
-    Inventory FindInventoryBySkuId(Integer sku_id);
+    @Select("select * from inventory where sku_id=#{skuId}")
+    Inventory FindInventoryBySkuId(Integer skuId);
 
-    @Update("select * from inventory where spu_id=#{spuId}")
-    Inventory[] FindInventoryBySpuId(Integer spu_id);
+    @Select("select * from inventory where spu_id=#{spuId}")
+    Inventory[] FindInventoryBySpuId(Integer spuId);
 }

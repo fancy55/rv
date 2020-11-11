@@ -8,7 +8,6 @@ import java.util.Date;
 @Data
 @ApiModel("子订单")
 public class SubOrders {
-    Integer id;
     Integer userId;
     Integer orderId;
     Integer subOrderId;
@@ -20,7 +19,7 @@ public class SubOrders {
     String encrypRvUserInfo;
     Integer originPrice;
     Integer payPrice;
-    Integer subOrderStatus;
+    Integer status;
     Date createTime;
     Date updateTime;
     Integer version;

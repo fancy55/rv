@@ -9,7 +9,6 @@ import java.util.Date;
 @Data
 @ApiModel("订单")
 public class Orders {
-    Integer id;
     Integer userId;
     Integer orderId;
     Integer productNum;
@@ -21,8 +20,12 @@ public class Orders {
     Date payTime;
     Date closeTime;
     Integer version;
-    Integer orderStatus;
+    Integer status;
     Integer payType;
+    Integer skuId;
+    String skuName;
+    Integer spuId;
+    String spuName;
 
     public static class OrderStatus{
         static public Integer CREATED = 1; //已创建

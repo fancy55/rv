@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface SubOrdersMapper {
-    @Insert("insert into sub_orders(sub_order_id,user_id,order_id,spu_id,spu_name,sku_id,sku_name,rv_user_info,encryp_rv_user_info,status,origin_price,pay_price,create_time,update_time,version) values(#{sub_order_id},#{user_id},#{order_id},#{spu_id},#{spu_name},#{sku_id},#{sku_name},#{rv_user_info},#{encryp_rv_user_info},#{status},#{origin_price},#{pay_price},now(),now(),0)")
+    @Insert("insert into sub_orders(sub_order_id,user_id,order_id,spu_id,spu_name,sku_id,sku_name,rv_user_info,encryp_rv_user_info,status,origin_price,pay_price,create_time,update_time,version) values(#{subOrderId},#{userId},#{orderId},#{spuId},#{spuName},#{skuId},#{skuName},#{rvUserInfo},#{encrypRvUserInfo},#{status},#{originPrice},#{payPrice},now(),now(),0)")
     Integer CreateSubOrder(SubOrders suborders);
 
     @Select("select user_id from sub_orders where sub_order_id = #{subOrderId}")
