@@ -23,6 +23,7 @@ public class GoodsSku {
     Date saleStart;
     Date saleEnd;
     String banner;
+    Integer num;
 
     public static class RvCar{
         static public RvCarType carType;

@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @Api("spu")
 @RequestMapping("spu")
@@ -47,4 +49,5 @@ public class GoodsSpuController {
                                          @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSkuService.GetGoodsSkuBySpuId(spuId, userId);
     }
+
 }

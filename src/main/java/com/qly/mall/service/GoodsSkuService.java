@@ -3,6 +3,7 @@ package com.qly.mall.service;
 import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.GoodsSkuMapper;
+import com.qly.mall.mapper.GoodsSpuMapper;
 import com.qly.mall.mapper.InventoryMapper;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.GoodsSku;
@@ -15,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @Service
 @Transactional
 public class GoodsSkuService {
@@ -22,6 +27,8 @@ public class GoodsSkuService {
 
     @Autowired
     GoodsSkuMapper goodsSkuMapper;
+    @Autowired
+    GoodsSpuMapper goodsSpuMapper;
     @Autowired
     UserInfoMapper userInfoMapper;
     @Autowired
@@ -62,5 +69,38 @@ public class GoodsSkuService {
     public GoodsSku[] GetGoodsSkuBySpuId(Integer spuId, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
         return goodsSkuMapper.GetGoodsSkuBySpuId(spuId);
+    }
+
+    public GoodsSku[] GetGoodsSkuByOffset(Integer offset, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSkuMapper.GetGoodsSkuByOffset(offset);
+    }
+
+    public List<GoodsSku[]> GetGoodsSkuByTime(String date, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        String[] nums = date.split("|");
+        List<GoodsSku[]> list = new ArrayList<>();
+        for(int i = 0;i < nums.length; i++){
+            list.add(goodsSkuMapper.GetGoodsSkuByNum(Integer.parseInt(nums[i])));
+        }
+        return list;
+    }
+
+    public List<GoodsSku[]> GetGoodsSkuByStart(String start, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByStart(start);
+        List<GoodsSku[]> list = new ArrayList<>();
+        for(Integer spuId: GoodsSpuIds)
+            list.add(goodsSkuMapper.FindSkuGoodsBySpuId(spuId));
+        return list;
+    }
+
+    public List<GoodsSku[]> GetGoodsSkuByDesctination(String destination, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByDestination(destination);
+        List<GoodsSku[]> list = new ArrayList<>();
+        for(Integer spuId: GoodsSpuIds)
+            list.add(goodsSkuMapper.FindSkuGoodsBySpuId(spuId));
+        return list;
     }
 }

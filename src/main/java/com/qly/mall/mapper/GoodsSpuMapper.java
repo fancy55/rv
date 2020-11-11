@@ -11,6 +11,12 @@ public interface GoodsSpuMapper {
     @Select("select * from goods_spu where spu_id = #{spuId}")
     GoodsSpu FindSpuGoodsBySpuId(Integer spuId);
 
+    @Select("select spu_id from goods_spu where start_pos = #{start}")
+    Integer[] FindSpuGoodsByStart(String start);
+
+    @Select("select spu_id from goods_spu where destination_pos = #{destination}")
+    Integer[] FindSpuGoodsByDestination(String destination);
+
     @Insert("insert into goods_spu(spu_id,spu_name,price,banner,`desc`,start_pos,destination_pos,sites,special,route,tips,cate,create_time,update_time,version,status) values(#{spuId},#{spuName},#{price},#{banner},#{desc},#{startPos},#{destinationPos},#{sites},#{special},#{route},#{tips},#{cateType},now(),now(),0,0)")
     Integer AddSpu(GoodsSpu goodsSpu);
 

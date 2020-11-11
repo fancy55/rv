@@ -14,7 +14,7 @@ public interface GoodsSkuMapper {
     @Select("select * from goods_sku where spu_id = #{spuId}")
     GoodsSku[] FindSkuGoodsBySpuId(Integer spuId);
 
-    @Insert("insert into goods_sku(sku_id,sku_name,spu_id,spu_name,origin_price,current_price,rv_car_size,rv_car_type,rv_car_color,banner,sale_start,sale_end,create_time,update_time,version) values(#{skuId},#{skuName},#{spuId},#{spuName},#{originPrice},#{currentPrice},#{rvCarSize},#{rvCarType},#{rvCarColor},#{banner},#{saleStart},#{saleEnd},now(),now(),0)")
+    @Insert("insert into goods_sku(sku_id,sku_name,spu_id,spu_name,origin_price,current_price,rv_car_size,rv_car_type,rv_car_color,banner,sale_start,sale_end,create_time,update_time,version,num) values(#{skuId},#{skuName},#{spuId},#{spuName},#{originPrice},#{currentPrice},#{rvCarSize},#{rvCarType},#{rvCarColor},#{banner},#{saleStart},#{saleEnd},now(),now(),0,#{num})")
     Integer AddSku(GoodsSku goodsSku);
 
     @Update("update goods_sku set origin_price=#{originPrice},current_price=#{currentPrice},rv_car_size=#{rvCarSize},rv_car_type=#{rvCarType},rv_car_color=#{rvCarColor},banner=#{banner},sale_start=#{saleStart},sale_end=#{saleEnd},update_time=now(),version=version+1 where sku_id=#{skuId}")
@@ -46,6 +46,12 @@ public interface GoodsSkuMapper {
 
     @Select("select * from goods_sku where spu_id=#{spuId}")
     GoodsSku[] GetGoodsSkuBySpuId(Integer spuId);
+
+    @Select("select * from goods_sku limit #{offset},7")
+    GoodsSku[] GetGoodsSkuByOffset(Integer offset);
+
+    @Select("select * from goods_sku where num = #{num}")
+    GoodsSku[] GetGoodsSkuByNum(Integer num);
 
     @Select("select * from goods_sku where sku_id=#{skuId}")
     GoodsSku GetGoodsSkuBySkuId(Integer skuId);
