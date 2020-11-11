@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserInfoMapper {
-    @Insert("insert into user_info(user_id,phone,wechat,password,status,nick_name,create_time,update_time,photo,type,version) values(#{userId},#{phone},#{wechat},#{password},#{userStatus},#{nickName},now(),now(),#{photo},#{userType},0)")
+    @Insert("insert into user_info(user_id,phone,wechat,password,status,nick_name,create_time,update_time,photo,type,version) values(#{userId},#{phone},#{wechat},#{password},#{status},#{nickName},now(),now(),#{photo},#{type},0)")
     Integer Register(UserInfo userInfo);
 
     @Select("select user_id from user_info where phone = #{phone} and password = #{password}")

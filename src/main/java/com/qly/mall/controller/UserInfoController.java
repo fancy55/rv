@@ -27,6 +27,8 @@ public class UserInfoController {
     @PostMapping("login")
     @ApiOperation("手机号+密码登录")
     public Integer Login(@RequestBody @ApiParam(name="UserInfo",value="手机号+密码",required=true) UserInfo userInfo) throws UnsupportedEncodingException {
+        System.out.println(userInfo.getPhone()+userInfo.getPassword());
+        System.out.println(userInfo);
         return userInfoService.LoginByPhoneAndPassword(userInfo);
     }
 

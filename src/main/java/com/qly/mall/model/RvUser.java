@@ -17,6 +17,7 @@ public class RvUser {
     Integer version;
     Integer status;
     Integer offset;
+    String phone;
 
     static public class RvUserStatus{
         static public Integer DELETE = 0;
