@@ -11,7 +11,7 @@ public interface RvUserMapper {
     @Insert("insert into rv_user_info(user_id,rv_id_card,real_name,create_time,update_time,version,status,offset,phone) values(#{userId},#{rvIdCard},#{realName},now(),now(),0,1,0,#{phone})")
     Integer AddRvUser(RvUser rvUser);
 
-    @Update("update rv_user_info set real_name=#{realName},rv_id_card=#{rvIdCard},update_time=now(),version=version+1 where user_id=#{userId} and offset=#{offset}")
+    @Update("update rv_user_info set real_name=#{realName},phone=#{phone},update_time=now(),version=version+1 where user_id=#{userId} and offset=#{offset}")
     Integer EditRvUser(RvUser rvUser);
 
     @Update("update rv_user_info set real_name=#{realName},update_time=now(),version=version+1,status=1 where user_id=#{userId} and rv_id_card=#{rvIdCard}")

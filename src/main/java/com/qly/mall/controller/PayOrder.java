@@ -27,7 +27,7 @@ public class PayOrder {
     @PostMapping("cancel")
     @ApiOperation("取消订单")
     public Integer CancelOrder(@RequestBody @ApiParam(name="Orders",value="orders",required=true) Orders orders,
-                              @RequestParam @ApiParam(name="Integer",value="userId",required=true)Integer userId){
+                              @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return ordersService.CancelOrder(orders, userId);
     }
 
