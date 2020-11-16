@@ -182,12 +182,20 @@ public class OrdersService {
 
     public Orders GetOrderBySubOrder(Integer subOrderId, Integer userId){
         CheckParamUserId(userId);
-        Integer orderId = subOrdersMapper.GetOrderBySubOrder(subOrderId,userId);
-        return ordersMapper.FindOrdersByOrderId(orderId);
+        SubOrders subOrders = subOrdersMapper.FindSubOrdersBySubOrderId(subOrderId);
+        Orders orders = ordersMapper.FindOrdersByOrderId(subOrders.getOrderId());
+        orders.setSpuId(subOrders.getSpuId());
+        orders.setSpuName(subOrders.getSpuName());
+        return orders;
     }
 
     public Orders[] GetOrdersByOffset(Integer offset, Integer user_id){
         CheckParamUserId(user_id);
-        return ordersMapper.GetOrdersByOffset(offset);
+        Orders[] orderses =  ordersMapper.GetOrdersByOffset(offset);
+        for(Orders orders:orderses){
+            SubOrders[] subOrders = subOrdersMapper.FindSubOrderByOrderId(orders.getOrderId());
+            orders.setSpuName(subOrders[0].getSpuName());
+        }
+        return orderses;
     }
 }

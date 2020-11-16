@@ -71,9 +71,9 @@ public class GoodsSkuService {
         return goodsSkuMapper.GetGoodsSkuBySpuId(spuId);
     }
 
-    public GoodsSku[] GetGoodsSkuByOffset(Integer offset, Integer user_id){
+    public GoodsSku[] GetGoodsSkuByOffset(Integer offset, Integer spuId, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
-        return goodsSkuMapper.GetGoodsSkuByOffset(offset);
+        return goodsSkuMapper.GetGoodsSkuByOffset(spuId, offset);
     }
 
     public List<GoodsSku[]> GetGoodsSkuByTime(String date, Integer user_id){

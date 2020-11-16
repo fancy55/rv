@@ -52,8 +52,9 @@ public class GoodsSkuController {
     @GetMapping("get/skugoods/offset")
     @ApiOperation("根据偏移20查询sku商品")
     public GoodsSku[] GetGoodsSkuByOffset(@RequestParam @ApiParam(name="offset",value="offset",required=true)Integer offset,
+                                          @RequestParam @ApiParam(name="spuId",value="spuId",required=true)Integer spuId,
                                           @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
-        return goodsSkuService.GetGoodsSkuByOffset(offset, userId);
+        return goodsSkuService.GetGoodsSkuByOffset(offset, spuId, userId);
     }
 
     @GetMapping("get/goods/date")
