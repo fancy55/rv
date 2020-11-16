@@ -76,11 +76,33 @@ public class UserInfoService {
         return user_id;
     }
 
-    public void CheckParam(UserInfo userInfo){
+    public Integer ForgetPassword(UserInfo userInfo, String newPassword){
+        CheckParamPhone(userInfo);
+        CheckParamNewPassword(userInfo, newPassword);
+        byte[] encrypt = aesUtil.encrypt(newPassword, key);
+        Integer user_id = userInfoMapper.UpdatePasswordByPhone(userInfo.getPhone(), aesUtil.parseByte2HexStr(encrypt));
+        if(user_id == 0){
+            logger.info("更新密码失败");
+            throw new  ErrorException(ErrorNo.UPDATE_PASSWORD_FAIL.code(), ErrorNo.UPDATE_PASSWORD_FAIL.msg());
+        }else{
+            logger.info("更新密码成功");
+        }
+        return user_id;
+    }
+
+    public void CheckParamPhone(UserInfo userInfo){
         if(userInfo.getPhone() == null || userInfo.getPhone().length() != 11) {
             logger.error(userInfo.getPhone() + "手机号码为空或格式不正确");
             throw new ErrorException(ErrorNo.PHONE_EMPTY_OR_FORMAT_ERROR.code(), ErrorNo.PHONE_EMPTY_OR_FORMAT_ERROR.msg());
         }
+        if(userInfoMapper.FindUserIdByPhone(userInfo.getPhone()) == null){
+            logger.error(userInfo.getPhone() + "手机号不存在");
+            throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
+        }
+    }
+
+    public void CheckParam(UserInfo userInfo){
+        CheckParamPhone(userInfo);
         if(userInfo.getPassword() == null || userInfo.getPassword().length() < 8 || userInfo.getPassword().length() >20){
             logger.error(userInfo.getPhone() + "密码为空或格式不正确");
             throw new ErrorException(ErrorNo.PASSWORD_EMPTY_OR_FORMAT_ERROR.code(), ErrorNo.PASSWORD_EMPTY_OR_FORMAT_ERROR.msg());

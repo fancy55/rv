@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class RVUserService {
-    static final Logger logger = LoggerFactory.getLogger(OrdersService.class);
+    static final Logger logger = LoggerFactory.getLogger(RVUserService.class);
 
     @Autowired
     UserInfoMapper userInfoMapper;

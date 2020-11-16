@@ -1,5 +1,6 @@
 package com.qly.mall.mapper;
 
+import com.qly.mall.model.GoodsSku;
 import com.qly.mall.model.GoodsSpu;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -55,4 +56,7 @@ public interface GoodsSpuMapper {
 
     @Select("select * from goods_spu where spu_id=#{spuId}")
     GoodsSpu GetGoodsSpuBySpuId(Integer spuId);
+
+    @Select("select * from goods_spu limit #{offset},20")
+    GoodsSpu[] GetGoodsSpuByOffset(Integer offset);
 }

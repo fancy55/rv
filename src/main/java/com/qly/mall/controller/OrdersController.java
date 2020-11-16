@@ -79,10 +79,17 @@ public class OrdersController {
         return ordersService.GetSubOrderByPhone(phone, userId);
     }
 
-    @GetMapping("get/phone/order")
-    @ApiOperation("根据phone查询订单")
-    public Orders[] GetRefundByPhone(@RequestParam @ApiParam(name="phone",value="phone",required=true)String phone,
+    @GetMapping("get/suborder/order")
+    @ApiOperation("根据子订单查询订单")
+    public Orders GetOrderBySubOrder(@RequestParam @ApiParam(name="subOrderId",value="subOrderId",required=true)Integer subOrderId,
                                       @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
-        return ordersService.GetOrderByPhone(phone, userId);
+        return ordersService.GetOrderBySubOrder(subOrderId, userId);
+    }
+
+    @GetMapping("get/orders/offset")
+    @ApiOperation("根据偏移20查询orders")
+    public Orders[] GetOrdersByOffset(@RequestParam @ApiParam(name="offset",value="offset",required=true)Integer offset,
+                                          @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return ordersService.GetOrdersByOffset(offset, userId);
     }
 }

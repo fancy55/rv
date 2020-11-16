@@ -50,4 +50,10 @@ public class GoodsSpuController {
         return goodsSkuService.GetGoodsSkuBySpuId(spuId, userId);
     }
 
+    @GetMapping("get/spugoods/offset")
+    @ApiOperation("根据偏移20查询spu商品")
+    public GoodsSpu[] GetGoodsSpuByOffset(@RequestParam @ApiParam(name="offset",value="offset",required=true)Integer offset,
+                                          @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return goodsSpuService.GetGoodsSpuByOffset(offset, userId);
+    }
 }

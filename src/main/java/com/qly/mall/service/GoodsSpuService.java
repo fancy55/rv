@@ -4,6 +4,7 @@ import com.qly.mall.exception.ErrorException;
 import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.GoodsSpuMapper;
 import com.qly.mall.mapper.UserInfoMapper;
+import com.qly.mall.model.GoodsSku;
 import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.CheckParamUtil;
@@ -63,5 +64,10 @@ public class GoodsSpuService {
     public GoodsSpu GetGoodsSpuBySpuId(Integer spuId, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
         return goodsSpuMapper.GetGoodsSpuBySpuId(spuId);
+    }
+
+    public GoodsSpu[] GetGoodsSpuByOffset(Integer offset, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSpuMapper.GetGoodsSpuByOffset(offset);
     }
 }

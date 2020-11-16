@@ -1,5 +1,6 @@
 package com.qly.mall.mapper;
 
+import com.qly.mall.model.Orders;
 import com.qly.mall.model.SubOrders;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,4 +22,7 @@ public interface SubOrdersMapper {
 
     @Select("select * from sub_orders where user_id = #{userId}")
     SubOrders[] FindSubOrderByUserId(Integer userId);
+
+    @Select("select order_id from orders where user_id = #{userId} and sub_order_id=#{subOrderId}")
+    Integer GetOrderBySubOrder(Integer userId, Integer subOrdersId);
 }

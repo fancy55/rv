@@ -179,4 +179,15 @@ public class OrdersService {
         CheckParamUserId(userId);
         return ordersMapper.FindOrderByUserId(userId1);
     }
+
+    public Orders GetOrderBySubOrder(Integer subOrderId, Integer userId){
+        CheckParamUserId(userId);
+        Integer orderId = subOrdersMapper.GetOrderBySubOrder(subOrderId,userId);
+        return ordersMapper.FindOrdersByOrderId(orderId);
+    }
+
+    public Orders[] GetOrdersByOffset(Integer offset, Integer user_id){
+        CheckParamUserId(user_id);
+        return ordersMapper.GetOrdersByOffset(offset);
+    }
 }

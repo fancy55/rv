@@ -1,5 +1,6 @@
 package com.qly.mall.mapper;
 
+import com.qly.mall.model.GoodsSpu;
 import com.qly.mall.model.Orders;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +29,7 @@ public interface OrdersMapper {
 
     @Select("select * from orders where user_id = #{userId} order by create_time desc")
     Orders[] FindOrderByUserId(Integer userId);
+
+    @Select("select * from orders limit #{offset},20")
+    Orders[] GetOrdersByOffset(Integer offset);
 }
