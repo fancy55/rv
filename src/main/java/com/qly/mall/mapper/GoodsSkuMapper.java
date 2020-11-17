@@ -50,6 +50,9 @@ public interface GoodsSkuMapper {
     @Select("select * from goods_sku where spu_id=#{spuId} limit #{offset},20")
     GoodsSku[] GetGoodsSkuByOffset(Integer spuId, Integer offset);
 
+    @Select("select * from goods_sku limit #{offset},20")
+    GoodsSku[] GetGoodsSkuByOffsetWithoutSpuId(Integer offset);
+
     @Select("select * from goods_sku where num = #{num}")
     GoodsSku[] GetGoodsSkuByNum(Integer num);
 

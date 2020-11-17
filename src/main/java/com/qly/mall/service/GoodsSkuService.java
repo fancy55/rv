@@ -76,6 +76,11 @@ public class GoodsSkuService {
         return goodsSkuMapper.GetGoodsSkuByOffset(spuId, offset);
     }
 
+    public GoodsSku[] GetGoodsSkuByOffsetWithoutSpuId(Integer offset, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        return goodsSkuMapper.GetGoodsSkuByOffsetWithoutSpuId(offset);
+    }
+
     public List<GoodsSku[]> GetGoodsSkuByTime(String date, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
         String[] nums = date.split("|");

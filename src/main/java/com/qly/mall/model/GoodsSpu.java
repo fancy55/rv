@@ -23,6 +23,7 @@ public class GoodsSpu {
     Integer version;
     Integer cate;
     String banner;
+    Integer date;
 
     public static class CateType{
         static public Integer VIRTUAL = 0;
