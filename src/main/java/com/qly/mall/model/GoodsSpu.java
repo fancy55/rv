@@ -21,11 +21,11 @@ public class GoodsSpu {
     Date createTime;
     Date updateTime;
     Integer version;
-    Integer cateType;
+    Integer cate;
     String banner;
 
     public static class CateType{
-        static public Integer VIRTUAL;
-        static public Integer ENTITY;
+        static public Integer VIRTUAL = 0;
+        static public Integer ENTITY = 0;
     }
 }

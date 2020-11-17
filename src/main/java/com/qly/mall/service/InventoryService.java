@@ -64,4 +64,9 @@ public class InventoryService {
         }
         return inventoryMapper.EditInventoryCap(inventory);
     }
+
+    public Inventory GetGoodsSkuInventoryBySkuId(Integer skuId, Integer userId){
+        checkParamUtil.CheckParamUserId(userId);
+        return inventoryMapper.FindInventoryBySkuId(skuId);
+    }
 }

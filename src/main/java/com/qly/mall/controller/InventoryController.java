@@ -35,4 +35,11 @@ public class InventoryController {
                                      @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return inventoryService.UpdateGoodsSkuCap(inventory, userId);
     }
+
+    @PostMapping("get")
+    @ApiOperation("获取商品库存")
+    public Inventory GetGoodsSkuInventoryBySkuId(@RequestParam @ApiParam(name="skuId",value="skuId",required=true)Integer skuId,
+                                     @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return inventoryService.GetGoodsSkuInventoryBySkuId(skuId, userId);
+    }
 }
