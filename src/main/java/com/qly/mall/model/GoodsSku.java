@@ -24,6 +24,10 @@ public class GoodsSku {
     Date saleEnd;
     String banner;
     Integer num;
+    //库存状态
+    Integer status; //0:软删除、1：上架、2：下架
+    Integer inv;
+    Integer cap;
 
     public static class RvCar{
         static public RvCarType carType;

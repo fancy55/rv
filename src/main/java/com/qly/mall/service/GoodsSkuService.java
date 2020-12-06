@@ -63,7 +63,12 @@ public class GoodsSkuService {
 
     public GoodsSku GetGoodsSkuBySkuId(Integer skuId, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
-        return goodsSkuMapper.GetGoodsSkuBySkuId(skuId);
+        GoodsSku goodsSku = goodsSkuMapper.GetGoodsSkuBySkuId(skuId);
+        Inventory inventory = inventoryMapper.FindInventoryBySkuId(skuId);
+        goodsSku.setInv(inventory.getInv());
+        goodsSku.setCap(inventory.getCap());
+        goodsSku.setStatus(inventory.getStatus());
+        return goodsSku;
     }
 
     public GoodsSku[] GetGoodsSkuBySpuId(Integer spuId, Integer user_id){
@@ -73,39 +78,25 @@ public class GoodsSkuService {
 
     public GoodsSku[] GetGoodsSkuByOffset(Integer offset, Integer spuId, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
-        return goodsSkuMapper.GetGoodsSkuByOffset(spuId, offset);
+        GoodsSku[] goodsSkus = goodsSkuMapper.GetGoodsSkuByOffset(spuId, offset);
+        for(GoodsSku goodsSku:goodsSkus){
+            Inventory inventory = inventoryMapper.FindInventoryBySkuId(goodsSku.getSkuId());
+            goodsSku.setInv(inventory.getInv());
+            goodsSku.setCap(inventory.getCap());
+            goodsSku.setStatus(inventory.getStatus());
+        }
+        return goodsSkus;
     }
 
     public GoodsSku[] GetGoodsSkuByOffsetWithoutSpuId(Integer offset, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
-        return goodsSkuMapper.GetGoodsSkuByOffsetWithoutSpuId(offset);
-    }
-
-    public List<GoodsSku[]> GetGoodsSkuByTime(String date, Integer user_id){
-        checkParamUtil.CheckParamUserId(user_id);
-        String[] nums = date.split("|");
-        List<GoodsSku[]> list = new ArrayList<>();
-        for(int i = 0;i < nums.length; i++){
-            list.add(goodsSkuMapper.GetGoodsSkuByNum(Integer.parseInt(nums[i])));
+        GoodsSku[] goodsSkus = goodsSkuMapper.GetGoodsSkuByOffsetWithoutSpuId(offset);
+        for(GoodsSku goodsSku:goodsSkus){
+            Inventory inventory = inventoryMapper.FindInventoryBySkuId(goodsSku.getSkuId());
+            goodsSku.setInv(inventory.getInv());
+            goodsSku.setCap(inventory.getCap());
+            goodsSku.setStatus(inventory.getStatus());
         }
-        return list;
-    }
-
-    public List<GoodsSku[]> GetGoodsSkuByStart(String start, Integer user_id){
-        checkParamUtil.CheckParamUserId(user_id);
-        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByStart(start);
-        List<GoodsSku[]> list = new ArrayList<>();
-        for(Integer spuId: GoodsSpuIds)
-            list.add(goodsSkuMapper.FindSkuGoodsBySpuId(spuId));
-        return list;
-    }
-
-    public List<GoodsSku[]> GetGoodsSkuByDesctination(String destination, Integer user_id){
-        checkParamUtil.CheckParamUserId(user_id);
-        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByDestination(destination);
-        List<GoodsSku[]> list = new ArrayList<>();
-        for(Integer spuId: GoodsSpuIds)
-            list.add(goodsSkuMapper.FindSkuGoodsBySpuId(spuId));
-        return list;
+        return goodsSkus;
     }
 }

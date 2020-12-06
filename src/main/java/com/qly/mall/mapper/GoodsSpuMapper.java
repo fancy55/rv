@@ -59,4 +59,7 @@ public interface GoodsSpuMapper {
 
     @Select("select * from goods_spu limit #{offset},20")
     GoodsSpu[] GetGoodsSpuByOffset(Integer offset);
+
+    @Select("select * from goods_spu where date = #{date}")
+    GoodsSpu[] GetGoodsSpuByDate(Integer date);
 }

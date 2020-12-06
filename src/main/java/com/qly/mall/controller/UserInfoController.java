@@ -45,4 +45,11 @@ public class UserInfoController {
                                   @RequestParam @ApiParam(name="newPassword",value="新密码",required=true)String newPassword) {
         return userInfoService.ForgetPassword(userInfo, newPassword);
     }
+
+    @PostMapping("get/info")
+    @ApiOperation(value="获取用户信息")
+    public UserInfo GetUserInfo(@RequestParam @ApiParam(name="userIdU",value="userIdU",required=true)Integer userIdU,
+                                @RequestParam @ApiParam(name="userIdA",value="userIdA",required=true)Integer userIdA) {
+        return userInfoService.GetUserInfo(userIdU,userIdA);
+    }
 }

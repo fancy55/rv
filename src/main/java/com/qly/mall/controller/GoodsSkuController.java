@@ -36,8 +36,7 @@ public class GoodsSkuController {
 
     @PostMapping("update")
     @ApiOperation("更新sku商品")
-    public Integer UpdateGoodsSku(@RequestBody @ApiParam(name="GoodsSku",value="更新的sku商品",required=true)GoodsSku newGoodsSku,
-                                  @RequestParam @ApiParam(name="cap",value="add_cap",required=true)Integer addCap,
+    public Integer UpdateGoodsSku(@RequestBody @ApiParam(name="GoodsSku",value="newGoodsSku",required=true)GoodsSku newGoodsSku,
                                   @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSkuService.UpdateGoodsSku(newGoodsSku, userId);
     }
@@ -62,26 +61,5 @@ public class GoodsSkuController {
     public GoodsSku[] GetGoodsSkuByOffset(@RequestParam @ApiParam(name="offset",value="offset",required=true)Integer offset,
                                           @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSkuService.GetGoodsSkuByOffsetWithoutSpuId(offset, userId);
-    }
-
-    @GetMapping("get/goods/date")
-    @ApiOperation("根据出游时间长短查询商品")
-    public List<GoodsSku[]> GetGoodsSkuByTime(@RequestParam @ApiParam(name="date",value="date",required=true)String date,
-                                              @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
-        return goodsSkuService.GetGoodsSkuByTime(date, userId);
-    }
-
-    @GetMapping("get/goods/start")
-    @ApiOperation("根据出游出发点查询商品")
-    public List<GoodsSku[]> GetGoodsSkuByStart(@RequestParam @ApiParam(name="start",value="start",required=true)String start,
-                                              @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
-        return goodsSkuService.GetGoodsSkuByStart(start, userId);
-    }
-
-    @GetMapping("get/goods/desctination")
-    @ApiOperation("根据出游出发点查询商品")
-    public List<GoodsSku[]> GetGoodsSkuByDesctination(@RequestParam @ApiParam(name="destination",value="destination",required=true)String destination,
-                                               @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
-        return goodsSkuService.GetGoodsSkuByDesctination(destination, userId);
     }
 }

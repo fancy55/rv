@@ -36,6 +36,7 @@ public class Orders {
         static public Integer REFUND_AUDIT = 6; //退款审核中
         static public Integer REFUND_PROCESS = 7; //退款中
         static public Integer REFUNDED = 8; //已退款
+        static public Integer HASUSED = 9; //已使用
     }
 
     public static class PayType{

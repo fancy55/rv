@@ -88,7 +88,7 @@ public class OrdersService {
             logger.error(user_id + "参数userId和订单中的创建人userId不一样");
             throw new ErrorException(ErrorNo.PARAM_ERROR.code(), ErrorNo.PARAM_ERROR.msg());
         }
-        //对子订单中商品进行检查（价格、上架状态、是否存在、出售时间）
+        //对子订单中商品进行检查（价格、上架状态、是否存在、出售时间、库存）
         for (SubOrders subOrder : subOrders) {
             if (subOrder.getPayPrice() < 0) {
                 logger.error(subOrder.getSubOrderId() + "子订单中用户支付价格<0");

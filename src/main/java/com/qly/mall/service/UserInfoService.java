@@ -5,6 +5,7 @@ import com.qly.mall.exception.ErrorNo;
 import com.qly.mall.mapper.UserInfoMapper;
 import com.qly.mall.model.UserInfo;
 import com.qly.mall.util.AESUtil;
+import com.qly.mall.util.CheckParamUtil;
 import com.qly.mall.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class UserInfoService {
     RandomUtil randomUtil;
     @Autowired
     AESUtil aesUtil;
+    @Autowired
+    CheckParamUtil checkParamUtil;
 
     public Integer Register(UserInfo userInfo, Integer type){
         if(type < 0 || type > 2)type = 0;
@@ -135,5 +138,10 @@ public class UserInfoService {
             logger.error(userInfo.getPhone() + "用户不存在");
             throw new ErrorException(ErrorNo.USER_NOT_EXIST.code(), ErrorNo.USER_NOT_EXIST.msg());
         }
+    }
+
+    public UserInfo GetUserInfo(Integer userIdU,Integer userIdA){
+        checkParamUtil.CheckParamUserId(userIdA);
+        return userInfoMapper.FindUserByUserId(userIdU);
     }
 }

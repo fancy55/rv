@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @Api("spu")
@@ -55,5 +56,26 @@ public class GoodsSpuController {
     public GoodsSpu[] GetGoodsSpuByOffset(@RequestParam @ApiParam(name="offset",value="offset",required=true)Integer offset,
                                           @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
         return goodsSpuService.GetGoodsSpuByOffset(offset, userId);
+    }
+
+    @GetMapping("get/goods/date")
+    @ApiOperation("根据出游时间长短查询商品")
+    public List<GoodsSpu[]> GetGoodsSpuByDate(@RequestParam @ApiParam(name="date",value="date",required=true)String date,
+                                              @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return goodsSpuService.GetGoodsSpuByDate(date, userId);
+    }
+
+    @GetMapping("get/goods/start")
+    @ApiOperation("根据出游出发点查询商品")
+    public List<GoodsSpu> GetGoodsSpuByStart(@RequestParam @ApiParam(name="start",value="start",required=true)String start,
+                                               @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return goodsSpuService.GetGoodsSpuByStart(start, userId);
+    }
+
+    @GetMapping("get/goods/desctination")
+    @ApiOperation("根据出游目的点查询商品")
+    public List<GoodsSpu> GetGoodsSpuByDesctination(@RequestParam @ApiParam(name="destination",value="destination",required=true)String destination,
+                                                      @RequestParam @ApiParam(name="userId",value="userId",required=true)Integer userId){
+        return goodsSpuService.GetGoodsSpuByDesctination(destination, userId);
     }
 }

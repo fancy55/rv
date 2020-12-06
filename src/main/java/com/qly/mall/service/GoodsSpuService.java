@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class GoodsSpuService {
@@ -69,5 +72,33 @@ public class GoodsSpuService {
     public GoodsSpu[] GetGoodsSpuByOffset(Integer offset, Integer user_id){
         checkParamUtil.CheckParamUserId(user_id);
         return goodsSpuMapper.GetGoodsSpuByOffset(offset);
+    }
+
+    public List<GoodsSpu[]> GetGoodsSpuByDate(String date, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        String[] nums = date.split("|");
+        List<GoodsSpu[]> list = new ArrayList<>();
+        for(int i = 0;i < nums.length; i++){
+            list.add(goodsSpuMapper.GetGoodsSpuByDate(Integer.parseInt(nums[i])));
+        }
+        return list;
+    }
+
+    public List<GoodsSpu> GetGoodsSpuByStart(String start, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByStart(start);
+        List<GoodsSpu> list = new ArrayList<>();
+        for(Integer spuId: GoodsSpuIds)
+            list.add(goodsSpuMapper.FindSpuGoodsBySpuId(spuId));
+        return list;
+    }
+
+    public List<GoodsSpu> GetGoodsSpuByDesctination(String destination, Integer user_id){
+        checkParamUtil.CheckParamUserId(user_id);
+        Integer[] GoodsSpuIds = goodsSpuMapper.FindSpuGoodsByDestination(destination);
+        List<GoodsSpu> list = new ArrayList<>();
+        for(Integer spuId: GoodsSpuIds)
+            list.add(goodsSpuMapper.FindSpuGoodsBySpuId(spuId));
+        return list;
     }
 }
