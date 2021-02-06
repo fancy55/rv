@@ -21,9 +21,9 @@ spring:
 
   redis:
     database: 1
-    host: 47.104.191.228
+    host: --
     port: 6379
-    password: 1234567abcd~@A
+    password: --
     jedis:
       pool:
         max-active: 8
@@ -43,8 +43,8 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    username: root
-    password: 1234567abcd~@A
+    username: --
+    password: --
     url: jdbc:mysql://47.104.191.228:3306/rv?serverTimezone=UTC&userUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -95,28 +95,28 @@ server:
 
 aliyun:
   card:
-    appSecret: ha4w17wiqpo6f8x5e8pkmedhwos326m7
-    appCode: a3b7c145592f4464a5c8fdfe74ba5d0b
-    host: https://zidv2.market.alicloudapi.com
-    path: /idcard/VerifyIdcardv2
-    method: GET
+    appSecret: --
+    appCode: --
+    host: --
+    path: --
+    method: --
   sms:
-    accessKeyId: LTAI4FjL6sAP98bdvjPkwrRs
-    accessKeySecret: y9WRlSSjQWBDNvm5CQOYSHbfGukrHF
-    templateCode: SMS_184816388
-    signName: csust303
+    accessKeyId: --
+    accessKeySecret: --
+    templateCode: --
+    signName: --
 
 
 encrypt:
   body:
-    aesKey: cvke+HB3-0w=HKXT
-    ALGORITHMSTR: AES/ECB/PKCS5Padding
+    aesKey: --
+    ALGORITHMSTR: --
 
 photo:
   info:
-    url: http://47.104.191.228:8089/rv
-    path: /root/vr/rv
-    type: .jpg
+    url: --
+    path: --
+    type: --
 
 async:
   info:
